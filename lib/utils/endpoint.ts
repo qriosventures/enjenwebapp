@@ -367,6 +367,156 @@ export const createItemSupplierUrl = `${apiUrl}/itemSupplier`;
 export const updateItemSupplierUrl = (id: number) => `${apiUrl}/itemSupplier/${id}`;
 export const deleteItemSupplierUrl = (id: number) => `${apiUrl}/itemSupplier/${id}`;
 
+// Item Type API
+export const getAllItemTypesUrl = `${apiUrl}/itemType/GetAllItemTypes`;
+export const getItemTypeByIdUrl = (id: number) => `${apiUrl}/itemType/${id}`;
+export const createItemTypeUrl = `${apiUrl}/itemType`;
+export const updateItemTypeUrl = (id: number) => `${apiUrl}/itemType/${id}`;
+export const deleteItemTypeUrl = (id: number) => `${apiUrl}/itemType/${id}`;
+
+// Labor Tracking API
+export const getAllLaborTrackingsUrl = `${apiUrl}/laborTracking/GetAllLaborTrackings`;
+export const getLaborTrackingByIdUrl = (id: number) => `${apiUrl}/laborTracking/${id}`;
+export const createLaborTrackingUrl = `${apiUrl}/laborTracking`;
+export const updateLaborTrackingUrl = (id: number) => `${apiUrl}/laborTracking/${id}`;
+export const deleteLaborTrackingUrl = (id: number) => `${apiUrl}/laborTracking/${id}`;
+
+// MRP Exception API
+export const getAllMrpExceptionsUrl = `${apiUrl}/mrpException/GetAllMrpExceptions`;
+export const getMrpExceptionByIdUrl = (id: number) => `${apiUrl}/mrpException/${id}`;
+export const createMrpExceptionUrl = `${apiUrl}/mrpException`;
+export const updateMrpExceptionUrl = (id: number) => `${apiUrl}/mrpException/${id}`;
+export const deleteMrpExceptionUrl = (id: number) => `${apiUrl}/mrpException/${id}`;
+
+// MRP Exception Resolution API
+export const getAllMrpExceptionResolutionsUrl = `${apiUrl}/mrpExceptionResolution/GetAllMrpExceptionResolutions`;
+export const getMrpExceptionResolutionByIdUrl = (id: number) => `${apiUrl}/mrpExceptionResolution/${id}`;
+export const createMrpExceptionResolutionUrl = `${apiUrl}/mrpExceptionResolution`;
+export const updateMrpExceptionResolutionUrl = (id: number) => `${apiUrl}/mrpExceptionResolution/${id}`;
+export const deleteMrpExceptionResolutionUrl = (id: number) => `${apiUrl}/mrpExceptionResolution/${id}`;
+
+// MRP Record API
+export const getAllMrpRecordsUrl = `${apiUrl}/mrpRecord/GetAllMrpRecords`;
+export const getMrpRecordByIdUrl = (id: number) => `${apiUrl}/mrpRecord/${id}`;
+export const createMrpRecordUrl = `${apiUrl}/mrpRecord`;
+export const updateMrpRecordUrl = (id: number) => `${apiUrl}/mrpRecord/${id}`;
+export const deleteMrpRecordUrl = (id: number) => `${apiUrl}/mrpRecord/${id}`;
+
+// MRP Run API
+export const getAllMrpRunsUrl = `${apiUrl}/mrpRun/GetAllMrpRuns`;
+export const getMrpRunByIdUrl = (id: number) => `${apiUrl}/mrpRun/${id}`;
+export const createMrpRunUrl = `${apiUrl}/mrpRun`;
+export const updateMrpRunUrl = (id: number) => `${apiUrl}/mrpRun/${id}`;
+export const deleteMrpRunUrl = (id: number) => `${apiUrl}/mrpRun/${id}`;
+
+// Operation API
+export const getAllOperationsUrl = `${apiUrl}/operation/GetAllOperations`;
+export const getOperationByIdUrl = (id: number) => `${apiUrl}/operation/${id}`;
+export const createOperationUrl = `${apiUrl}/operation`;
+export const updateOperationUrl = (id: number) => `${apiUrl}/operation/${id}`;
+export const deleteOperationUrl = (id: number) => `${apiUrl}/operation/${id}`;
+
+// Payment Term API
+export const getAllPaymentTermsUrl = `${apiUrl}/paymentTerm/GetAllPaymentTerms`;
+export const getPaymentTermByIdUrl = (id: number) => `${apiUrl}/paymentTerm/${id}`;
+export const createPaymentTermUrl = `${apiUrl}/paymentTerm`;
+export const updatePaymentTermUrl = (id: number) => `${apiUrl}/paymentTerm/${id}`;
+export const deletePaymentTermUrl = (id: number) => `${apiUrl}/paymentTerm/${id}`;
+
+
+// PO Acknowledgement API
+export const getAllPoAcknowledgementsUrl = `${apiUrl}/poAcknowledgement/GetAllPoAcknowledgements`;
+export const getPoAcknowledgementByIdUrl = (id: number) => `${apiUrl}/poAcknowledgement/${id}`;
+export const createPoAcknowledgementUrl = `${apiUrl}/poAcknowledgement`;
+export const updatePoAcknowledgementUrl = (id: number) => `${apiUrl}/poAcknowledgement/${id}`;
+export const deletePoAcknowledgementUrl = (id: number) => `${apiUrl}/poAcknowledgement/${id}`;
+
+// Production Line API
+export const getAllProductionLinesUrl = `${apiUrl}/productionLine/GetAllProductionLines`;
+export const getProductionLineByIdUrl = (id: number) => `${apiUrl}/productionLine/${id}`;
+export const createProductionLineUrl = `${apiUrl}/productionLine`;
+export const updateProductionLineUrl = (id: number) => `${apiUrl}/productionLine/${id}`;
+export const deleteProductionLineUrl = (id: number) => `${apiUrl}/productionLine/${id}`;
+
+// Production Log API
+export const getAllProductionLogsUrl = `${apiUrl}/productionLog/GetAllProductionLogs`;
+export const getProductionLogByIdUrl = (id: number) => `${apiUrl}/productionLog/${id}`;
+export const createProductionLogUrl = `${apiUrl}/productionLog`;
+export const updateProductionLogUrl = (id: number) => `${apiUrl}/productionLog/${id}`;
+export const deleteProductionLogUrl = (id: number) => `${apiUrl}/productionLog/${id}`;
+
+// Production Shift API
+export const getAllProductionShiftsUrl = `${apiUrl}/productionShift/GetAllProductionShifts`;
+export const getProductionShiftByIdUrl = (id: number) => `${apiUrl}/productionShift/${id}`;
+export const createProductionShiftUrl = `${apiUrl}/productionShift`;
+export const updateProductionShiftUrl = (id: number) => `${apiUrl}/productionShift/${id}`;
+export const deleteProductionShiftUrl = (id: number) => `${apiUrl}/productionShift/${id}`;
+
+// Purchase Order API
+export const getAllPurchaseOrdersUrl = `${apiUrl}/purchaseOrder/GetAllPurchaseOrders`;
+export const getPurchaseOrderByIdUrl = (id: number) => `${apiUrl}/purchaseOrder/${id}`;
+export const createPurchaseOrderUrl = `${apiUrl}/purchaseOrder`;
+export const updatePurchaseOrderUrl = (id: number) => `${apiUrl}/purchaseOrder/${id}`;
+export const deletePurchaseOrderUrl = (id: number) => `${apiUrl}/purchaseOrder/${id}`;
+
+// Purchase Order Item API
+export const getAllPurchaseOrderItemsUrl = `${apiUrl}/purchaseOrderItem/GetAllPurchaseOrderItems`;
+export const getPurchaseOrderItemByIdUrl = (id: number) => `${apiUrl}/purchaseOrderItem/${id}`;
+export const createPurchaseOrderItemUrl = `${apiUrl}/purchaseOrderItem`;
+export const updatePurchaseOrderItemUrl = (id: number) => `${apiUrl}/purchaseOrderItem/${id}`;
+export const deletePurchaseOrderItemUrl = (id: number) => `${apiUrl}/purchaseOrderItem/${id}`;
+
+// Purchase Requisition API
+export const getAllPurchaseRequisitionsUrl = `${apiUrl}/purchaseRequisition/GetAllPurchaseRequisitions`;
+export const getPurchaseRequisitionByIdUrl = (id: number) => `${apiUrl}/purchaseRequisition/${id}`;
+export const createPurchaseRequisitionUrl = `${apiUrl}/purchaseRequisition`;
+export const updatePurchaseRequisitionUrl = (id: number) => `${apiUrl}/purchaseRequisition/${id}`;
+export const deletePurchaseRequisitionUrl = (id: number) => `${apiUrl}/purchaseRequisition/${id}`;
+
+// Purchase Requisition Item API
+export const getAllPurchaseRequisitionItemsUrl = `${apiUrl}/purchaseRequisitionItem/GetAllPurchaseRequisitionItems`;
+export const getPurchaseRequisitionItemByIdUrl = (id: number) => `${apiUrl}/purchaseRequisitionItem/${id}`;
+export const createPurchaseRequisitionItemUrl = `${apiUrl}/purchaseRequisitionItem`;
+export const updatePurchaseRequisitionItemUrl = (id: number) => `${apiUrl}/purchaseRequisitionItem/${id}`;
+export const deletePurchaseRequisitionItemUrl = (id: number) => `${apiUrl}/purchaseRequisitionItem/${id}`;
+
+// Quality Check API
+export const getAllQualityChecksUrl = `${apiUrl}/qualityCheck/GetAllQualityChecks`;
+export const getQualityCheckByIdUrl = (id: number) => `${apiUrl}/qualityCheck/${id}`;
+export const createQualityCheckUrl = `${apiUrl}/qualityCheck`;
+export const updateQualityCheckUrl = (id: number) => `${apiUrl}/qualityCheck/${id}`;
+export const deleteQualityCheckUrl = (id: number) => `${apiUrl}/qualityCheck/${id}`;
+
+// Quality Defect API
+export const getAllQualityDefectsUrl = `${apiUrl}/qualityDefect/GetAllQualityDefects`;
+export const getQualityDefectByIdUrl = (id: number) => `${apiUrl}/qualityDefect/${id}`;
+export const createQualityDefectUrl = `${apiUrl}/qualityDefect`;
+export const updateQualityDefectUrl = (id: number) => `${apiUrl}/qualityDefect/${id}`;
+export const deleteQualityDefectUrl = (id: number) => `${apiUrl}/qualityDefect/${id}`;
+
+// Quote Line Item API
+export const getAllQuoteLineItemsUrl = `${apiUrl}/quoteLineItem/GetAllQuoteLineItems`;
+export const getQuoteLineItemByIdUrl = (id: number) => `${apiUrl}/quoteLineItem/${id}`;
+export const createQuoteLineItemUrl = `${apiUrl}/quoteLineItem`;
+export const updateQuoteLineItemUrl = (id: number) => `${apiUrl}/quoteLineItem/${id}`;
+export const deleteQuoteLineItemUrl = (id: number) => `${apiUrl}/quoteLineItem/${id}`;
+
+// Request For Quotation API
+export const getAllRequestForQuotationsUrl = `${apiUrl}/requestForQuotation/GetAllRequestForQuotations`;
+export const getRequestForQuotationByIdUrl = (id: number) => `${apiUrl}/requestForQuotation/${id}`;
+export const createRequestForQuotationUrl = `${apiUrl}/requestForQuotation`;
+export const updateRequestForQuotationUrl = (id: number) => `${apiUrl}/requestForQuotation/${id}`;
+export const deleteRequestForQuotationUrl = (id: number) => `${apiUrl}/requestForQuotation/${id}`;
+
+
+// Return Item API
+export const getAllReturnItemsUrl = `${apiUrl}/returnItem/GetAllReturnItems`;
+export const getReturnItemByIdUrl = (id: number) => `${apiUrl}/returnItem/${id}`;
+export const createReturnItemUrl = `${apiUrl}/returnItem`;
+export const updateReturnItemUrl = (id: number) => `${apiUrl}/returnItem/${id}`;
+export const deleteReturnItemUrl = (id: number) => `${apiUrl}/returnItem/${id}`;
+
+
 export const getEndpointsByMethod = (method: string, endpoints: any) => {
   switch (method) {
     case "GET":
