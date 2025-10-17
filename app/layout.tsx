@@ -1,37 +1,37 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/common/Header";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
+import { TabProviderWrapper } from "@/components/conetxt/TabProviderWrapper"; 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "Enjen SCM",
-  description: "SCM - Next.js App",
+  title: "Supply Chain Management",
+  description: "Efficient procurement and supplier management system",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-950 text-gray-100`}
-      >
-        <Header />
-        <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-          {children}
-        </main>
+    <html lang="en" className={inter.variable}>
+      <body className="bg-[#F5F6F1] text-gray-800 font-inter">
+        <TabProviderWrapper>
+          <Header />
+          <main className="px-6 sm:px-8 lg:px-12 xl:px-16 py-8">
+            <div className="bg-white border border-gray-100 p-8">
+              {children}
+            </div>
+          </main>
+        </TabProviderWrapper>
       </body>
     </html>
   );

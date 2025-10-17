@@ -516,6 +516,331 @@ export const createReturnItemUrl = `${apiUrl}/returnItem`;
 export const updateReturnItemUrl = (id: number) => `${apiUrl}/returnItem/${id}`;
 export const deleteReturnItemUrl = (id: number) => `${apiUrl}/returnItem/${id}`;
 
+// Return Request API
+export const getAllReturnRequestsUrl = `${apiUrl}/returnRequest/GetAllReturnRequests`;
+export const getReturnRequestByIdUrl = (id: number) => `${apiUrl}/returnRequest/${id}`;
+export const createReturnRequestUrl = `${apiUrl}/returnRequest`;
+export const updateReturnRequestUrl = (id: number) => `${apiUrl}/returnRequest/${id}`;
+export const deleteReturnRequestUrl = (id: number) => `${apiUrl}/returnRequest/${id}`;
+
+
+// Rework Reason API
+export const getAllReworkReasonsUrl = `${apiUrl}/reworkReason/GetAllReworkReasons`;
+export const getReworkReasonByIdUrl = (id: number) => `${apiUrl}/reworkReason/${id}`;
+export const createReworkReasonUrl = `${apiUrl}/reworkReason`;
+export const updateReworkReasonUrl = (id: number) => `${apiUrl}/reworkReason/${id}`;
+export const deleteReworkReasonUrl = (id: number) => `${apiUrl}/reworkReason/${id}`;
+
+
+// Rework Record API
+export const getAllReworkRecordsUrl = `${apiUrl}/reworkRecord/GetAllReworkRecords`;
+export const getReworkRecordByIdUrl = (id: number) => `${apiUrl}/reworkRecord/${id}`;
+export const createReworkRecordUrl = `${apiUrl}/reworkRecord`;
+export const updateReworkRecordUrl = (id: number) => `${apiUrl}/reworkRecord/${id}`;
+export const deleteReworkRecordUrl = (id: number) => `${apiUrl}/reworkRecord/${id}`;
+
+// RFQ Item API
+export const getAllRfqItemsUrl = `${apiUrl}/rfqItem/GetAllRfqItems`;
+export const getRfqItemByIdUrl = (id: number) => `${apiUrl}/rfqItem/${id}`;
+export const createRfqItemUrl = `${apiUrl}/rfqItem`;
+export const updateRfqItemUrl = (id: number) => `${apiUrl}/rfqItem/${id}`;
+export const deleteRfqItemUrl = (id: number) => `${apiUrl}/rfqItem/${id}`;
+
+
+// RFQ Requisition API
+export const getAllRfqRequisitionsUrl = `${apiUrl}/rfqRequisition/GetAllRfqRequisitions`;
+export const getRfqRequisitionByIdUrl = (id: number) => `${apiUrl}/rfqRequisition/${id}`;
+export const createRfqRequisitionUrl = `${apiUrl}/rfqRequisition`;
+export const updateRfqRequisitionUrl = (id: number) => `${apiUrl}/rfqRequisition/${id}`;
+export const deleteRfqRequisitionUrl = (id: number) => `${apiUrl}/rfqRequisition/${id}`;
+
+// RFQ Supplier API
+export const getAllRfqSuppliersUrl = `${apiUrl}/rfqSupplier/GetAllRfqSuppliers`;
+export const getRfqSupplierByIdUrl = (id: number) => `${apiUrl}/rfqSupplier/${id}`;
+export const createRfqSupplierUrl = `${apiUrl}/rfqSupplier`;
+export const updateRfqSupplierUrl = (id: number) => `${apiUrl}/rfqSupplier/${id}`;
+export const deleteRfqSupplierUrl = (id: number) => `${apiUrl}/rfqSupplier/${id}`;
+
+// Road Tax Record API
+export const getAllRoadTaxRecordsUrl = `${apiUrl}/roadTaxRecord/GetAllRoadTaxRecords`;
+export const getRoadTaxRecordByIdUrl = (id: number) => `${apiUrl}/roadTaxRecord/${id}`;
+export const createRoadTaxRecordUrl = `${apiUrl}/roadTaxRecord`;
+export const updateRoadTaxRecordUrl = (id: number) => `${apiUrl}/roadTaxRecord/${id}`;
+export const deleteRoadTaxRecordUrl = (id: number) => `${apiUrl}/roadTaxRecord/${id}`;
+
+// RTO Fitness Record API
+export const getAllRtoFitnessRecordsUrl = `${apiUrl}/rtoFitnessRecord/GetAllRtoFitnessRecords`;
+export const getRtoFitnessRecordByIdUrl = (id: number) => `${apiUrl}/rtoFitnessRecord/${id}`;
+export const createRtoFitnessRecordUrl = `${apiUrl}/rtoFitnessRecord`;
+export const updateRtoFitnessRecordUrl = (id: number) => `${apiUrl}/rtoFitnessRecord/${id}`;
+export const deleteRtoFitnessRecordUrl = (id: number) => `${apiUrl}/rtoFitnessRecord/${id}`;
+
+// Sales Invoice API
+export const getAllSalesInvoicesUrl = `${apiUrl}/salesInvoice/GetAllSalesInvoices`;
+export const getSalesInvoiceByIdUrl = (id: number) => `${apiUrl}/salesInvoice/${id}`;
+export const createSalesInvoiceUrl = `${apiUrl}/salesInvoice`;
+export const updateSalesInvoiceUrl = (id: number) => `${apiUrl}/salesInvoice/${id}`;
+export const deleteSalesInvoiceUrl = (id: number) => `${apiUrl}/salesInvoice/${id}`;
+
+// Sales Invoice Line API
+export const getAllSalesInvoiceLinesUrl = `${apiUrl}/salesInvoiceLine/GetAllSalesInvoiceLines`;
+export const getSalesInvoiceLineByIdUrl = (id: number) => `${apiUrl}/salesInvoiceLine/${id}`;
+export const createSalesInvoiceLineUrl = `${apiUrl}/salesInvoiceLine`;
+export const updateSalesInvoiceLineUrl = (id: number) => `${apiUrl}/salesInvoiceLine/${id}`;
+export const deleteSalesInvoiceLineUrl = (id: number) => `${apiUrl}/salesInvoiceLine/${id}`;
+
+// Sales Order API
+export const getAllSalesOrdersUrl = `${apiUrl}/salesOrder/GetAllSalesOrders`;
+export const getSalesOrderByIdUrl = (id: number) => `${apiUrl}/salesOrder/${id}`;
+export const createSalesOrderUrl = `${apiUrl}/salesOrder`;
+export const updateSalesOrderUrl = (id: number) => `${apiUrl}/salesOrder/${id}`;
+export const deleteSalesOrderUrl = (id: number) => `${apiUrl}/salesOrder/${id}`;
+
+// Sales Order Line API
+export const getAllSalesOrderLinesUrl = `${apiUrl}/salesOrderLine/GetAllSalesOrderLines`;
+export const getSalesOrderLineByIdUrl = (id: number) => `${apiUrl}/salesOrderLine/${id}`;
+export const createSalesOrderLineUrl = `${apiUrl}/salesOrderLine`;
+export const updateSalesOrderLineUrl = (id: number) => `${apiUrl}/salesOrderLine/${id}`;
+export const deleteSalesOrderLineUrl = (id: number) => `${apiUrl}/salesOrderLine/${id}`;
+
+// Scrap Reason API Endpoints
+export const getAllScrapReasonsUrl = `${apiUrl}/scrapReason/GetAllScrapReasons`;
+export const getScrapReasonByIdUrl = (id: number) => `${apiUrl}/scrapReason/${id}`;
+export const createScrapReasonUrl = `${apiUrl}/scrapReason`;
+export const updateScrapReasonUrl = (id: number) => `${apiUrl}/scrapReason/${id}`;
+export const deleteScrapReasonUrl = (id: number) => `${apiUrl}/scrapReason/${id}`;
+
+// Scrap Record API Endpoints
+export const getAllScrapRecordsUrl = `${apiUrl}/scrapRecord/GetAllScrapRecords`;
+export const getScrapRecordByIdUrl = (id: number) => `${apiUrl}/scrapRecord/${id}`;
+export const createScrapRecordUrl = `${apiUrl}/scrapRecord`;
+export const updateScrapRecordUrl = (id: number) => `${apiUrl}/scrapRecord/${id}`;
+export const deleteScrapRecordUrl = (id: number) => `${apiUrl}/scrapRecord/${id}`;
+
+// Shift Assignment API Endpoints
+export const getAllShiftAssignmentsUrl = `${apiUrl}/shiftAssignment/GetAllShiftAssignments`;
+export const getShiftAssignmentByIdUrl = (id: number) => `${apiUrl}/shiftAssignment/${id}`;
+export const createShiftAssignmentUrl = `${apiUrl}/shiftAssignment`;
+export const updateShiftAssignmentUrl = (id: number) => `${apiUrl}/shiftAssignment/${id}`;
+export const deleteShiftAssignmentUrl = (id: number) => `${apiUrl}/shiftAssignment/${id}`;
+
+// Shift Schedule API Endpoints
+export const getAllShiftSchedulesUrl = `${apiUrl}/shiftSchedule/GetAllShiftSchedules`;
+export const getShiftScheduleByIdUrl = (id: number) => `${apiUrl}/shiftSchedule/${id}`;
+export const createShiftScheduleUrl = `${apiUrl}/shiftSchedule`;
+export const updateShiftScheduleUrl = (id: number) => `${apiUrl}/shiftSchedule/${id}`;
+export const deleteShiftScheduleUrl = (id: number) => `${apiUrl}/shiftSchedule/${id}`;
+
+// Shipment API Endpoints
+export const getAllShipmentsUrl = `${apiUrl}/shipment/GetAllShipments`;
+export const getShipmentByIdUrl = (id: number) => `${apiUrl}/shipment/${id}`;
+export const createShipmentUrl = `${apiUrl}/shipment`;
+export const updateShipmentUrl = (id: number) => `${apiUrl}/shipment/${id}`;
+export const deleteShipmentUrl = (id: number) => `${apiUrl}/shipment/${id}`;
+
+// Shipment Line API
+export const getAllShipmentLinesUrl = `${apiUrl}/shipmentLine/GetAllShipmentLines`;
+export const getShipmentLineByIdUrl = (id: number) => `${apiUrl}/shipmentLine/${id}`;
+export const createShipmentLineUrl = `${apiUrl}/shipmentLine`;
+export const updateShipmentLineUrl = (id: number) => `${apiUrl}/shipmentLine/${id}`;
+export const deleteShipmentLineUrl = (id: number) => `${apiUrl}/shipmentLine/${id}`;
+
+// State API
+export const getAllStatesUrl = `${apiUrl}/state/GetAllStates`;
+export const getStatesByCountryUrl = (countryId: number) => `${apiUrl}/state/country/${countryId}`;
+export const getStateByIdUrl = (id: number) => `${apiUrl}/state/${id}`;
+export const createStateUrl = `${apiUrl}/state`;
+export const updateStateUrl = (id: number) => `${apiUrl}/state/${id}`;
+export const deleteStateUrl = (id: number) => `${apiUrl}/state/${id}`;
+
+// Supplier Address API
+export const getAllSupplierAddressesUrl = `${apiUrl}/supplierAddress/GetAllSupplierAddresses`;
+export const getSupplierAddressByIdUrl = (id: number) => `${apiUrl}/supplierAddress/${id}`;
+export const getAddressesBySupplierUrl = (supplierId: number) => `${apiUrl}/supplierAddress/GetAddressesBySupplier/${supplierId}`;
+export const createSupplierAddressUrl = `${apiUrl}/supplierAddress`;
+export const updateSupplierAddressUrl = (id: number) => `${apiUrl}/supplierAddress/${id}`;
+export const deleteSupplierAddressUrl = (id: number) => `${apiUrl}/supplierAddress/${id}`;
+
+// Supplier API
+export const getAllSuppliersUrl = `${apiUrl}/supplier/GetAllSuppliers`;
+export const getSupplierByIdUrl = (id: number) => `${apiUrl}/supplier/${id}`;
+export const createSupplierUrl = `${apiUrl}/supplier`;
+export const updateSupplierUrl = (id: number) => `${apiUrl}/supplier/${id}`;
+export const deleteSupplierUrl = (id: number) => `${apiUrl}/supplier/${id}`;
+
+// Supplier Bank Detail API
+export const getAllSupplierBankDetailsUrl = `${apiUrl}/supplierBankDetail/GetAllSupplierBankDetails`;
+export const getSupplierBankDetailByIdUrl = (id: number) => `${apiUrl}/supplierBankDetail/${id}`;
+export const getBankDetailsBySupplierUrl = (supplierId: number) => `${apiUrl}/supplierBankDetail/GetBankDetailsBySupplier/${supplierId}`;
+export const createSupplierBankDetailUrl = `${apiUrl}/supplierBankDetail`;
+export const updateSupplierBankDetailUrl = (id: number) => `${apiUrl}/supplierBankDetail/${id}`;
+export const deleteSupplierBankDetailUrl = (id: number) => `${apiUrl}/supplierBankDetail/${id}`;
+
+
+// Supplier Certification API
+export const getAllSupplierCertificationsUrl = `${apiUrl}/supplierCertification/GetAllSupplierCertifications`;
+export const getSupplierCertificationByIdUrl = (id: number) => `${apiUrl}/supplierCertification/${id}`;
+export const getCertificationsBySupplierUrl = (supplierId: number) => `${apiUrl}/supplierCertification/GetCertificationsBySupplier/${supplierId}`;
+export const createSupplierCertificationUrl = `${apiUrl}/supplierCertification`;
+export const updateSupplierCertificationUrl = (id: number) => `${apiUrl}/supplierCertification/${id}`;
+export const deleteSupplierCertificationUrl = (id: number) => `${apiUrl}/supplierCertification/${id}`;
+
+// Supplier Compliance API
+export const getAllSupplierCompliancesUrl = `${apiUrl}/supplierCompliance/GetAllSupplierCompliances`;
+export const getSupplierComplianceByIdUrl = (id: number) => `${apiUrl}/supplierCompliance/${id}`;
+export const createSupplierComplianceUrl = `${apiUrl}/supplierCompliance`;
+export const updateSupplierComplianceUrl = (id: number) => `${apiUrl}/supplierCompliance/${id}`;
+export const deleteSupplierComplianceUrl = (id: number) => `${apiUrl}/supplierCompliance/${id}`;
+
+// Supplier Contact Endpoints
+export const getAllSupplierContactsUrl = `${apiUrl}/supplierContact/GetAllSupplierContacts`;
+export const getSupplierContactByIdUrl = (id: number) => `${apiUrl}/supplierContact/${id}`;
+export const createSupplierContactUrl = `${apiUrl}/supplierContact`;
+export const updateSupplierContactUrl = (id: number) => `${apiUrl}/supplierContact/${id}`;
+export const deleteSupplierContactUrl = (id: number) => `${apiUrl}/supplierContact/${id}`;
+
+// Supplier Contract Endpoints
+export const getAllSupplierContractsUrl = `${apiUrl}/supplierContract/GetAllSupplierContracts`;
+export const getSupplierContractByIdUrl = (id: number) => `${apiUrl}/supplierContract/${id}`;
+export const createSupplierContractUrl = `${apiUrl}/supplierContract`;
+export const updateSupplierContractUrl = (id: number) => `${apiUrl}/supplierContract/${id}`;
+export const deleteSupplierContractUrl = (id: number) => `${apiUrl}/supplierContract/${id}`;
+
+// Supplier Evaluation Endpoints
+export const getAllSupplierEvaluationsUrl = `${apiUrl}/supplierEvaluation/GetAllSupplierEvaluations`;
+export const getSupplierEvaluationByIdUrl = (id: number) => `${apiUrl}/supplierEvaluation/${id}`;
+export const createSupplierEvaluationUrl = `${apiUrl}/supplierEvaluation`;
+export const updateSupplierEvaluationUrl = (id: number) => `${apiUrl}/supplierEvaluation/${id}`;
+export const deleteSupplierEvaluationUrl = (id: number) => `${apiUrl}/supplierEvaluation/${id}`;
+
+// Supplier Invoice Endpoints
+export const getAllSupplierInvoicesUrl = `${apiUrl}/supplierInvoice/GetAllSupplierInvoices`;
+export const getSupplierInvoiceByIdUrl = (id: number) => `${apiUrl}/supplierInvoice/${id}`;
+export const createSupplierInvoiceUrl = `${apiUrl}/supplierInvoice`;
+export const updateSupplierInvoiceUrl = (id: number) => `${apiUrl}/supplierInvoice/${id}`;
+export const deleteSupplierInvoiceUrl = (id: number) => `${apiUrl}/supplierInvoice/${id}`;
+
+// Supplier Invoice Line Endpoints
+export const getAllSupplierInvoiceLinesUrl = `${apiUrl}/supplierInvoiceLine/GetAllSupplierInvoiceLines`;
+export const getSupplierInvoiceLineByIdUrl = (id: number) => `${apiUrl}/supplierInvoiceLine/${id}`;
+export const createSupplierInvoiceLineUrl = `${apiUrl}/supplierInvoiceLine`;
+export const updateSupplierInvoiceLineUrl = (id: number) => `${apiUrl}/supplierInvoiceLine/${id}`;
+export const deleteSupplierInvoiceLineUrl = (id: number) => `${apiUrl}/supplierInvoiceLine/${id}`;
+
+// Supplier Quote Endpoints
+export const getAllSupplierQuotesUrl = `${apiUrl}/supplierQuote/GetAllSupplierQuotes`;
+export const getSupplierQuoteByIdUrl = (id: number) => `${apiUrl}/supplierQuote/${id}`;
+export const createSupplierQuoteUrl = `${apiUrl}/supplierQuote`;
+export const updateSupplierQuoteUrl = (id: number) => `${apiUrl}/supplierQuote/${id}`;
+export const deleteSupplierQuoteUrl = (id: number) => `${apiUrl}/supplierQuote/${id}`;
+
+// Trip Point Endpoints
+export const getAllTripPointsUrl = `${apiUrl}/tripPoint/GetAllTripPoints`;
+export const getTripPointByIdUrl = (id: number) => `${apiUrl}/tripPoint/${id}`;
+export const createTripPointUrl = `${apiUrl}/tripPoint`;
+export const updateTripPointUrl = (id: number) => `${apiUrl}/tripPoint/${id}`;
+export const deleteTripPointUrl = (id: number) => `${apiUrl}/tripPoint/${id}`;
+
+// Unit Measure Endpoints
+export const getAllUnitMeasuresUrl = `${apiUrl}/unitMeasure/GetAllUnitMeasures`;
+export const getUnitMeasureByIdUrl = (id: number) => `${apiUrl}/unitMeasure/${id}`;
+export const createUnitMeasureUrl = `${apiUrl}/unitMeasure`;
+export const updateUnitMeasureUrl = (id: number) => `${apiUrl}/unitMeasure/${id}`;
+export const deleteUnitMeasureUrl = (id: number) => `${apiUrl}/unitMeasure/${id}`;
+
+// Vehicle Endpoints
+export const getAllVehiclesUrl = `${apiUrl}/vehicle/GetAllVehicles`;
+export const getVehicleByIdUrl = (id: number) => `${apiUrl}/vehicle/${id}`;
+export const createVehicleUrl = `${apiUrl}/vehicle`;
+export const updateVehicleUrl = (id: number) => `${apiUrl}/vehicle/${id}`;
+export const deleteVehicleUrl = (id: number) => `${apiUrl}/vehicle/${id}`;
+
+// Vehicle Assignment Endpoints
+export const getAllVehicleAssignmentsUrl = `${apiUrl}/vehicleAssignment/GetAllVehicleAssignments`;
+export const getVehicleAssignmentByIdUrl = (id: number) => `${apiUrl}/vehicleAssignment/${id}`;
+export const getAssignmentsByVehicleUrl = (vehicleId: number) => `${apiUrl}/vehicleAssignment/GetAssignmentsByVehicle/${vehicleId}`;
+export const createVehicleAssignmentUrl = `${apiUrl}/vehicleAssignment`;
+export const updateVehicleAssignmentUrl = (id: number) => `${apiUrl}/vehicleAssignment/${id}`;
+export const deleteVehicleAssignmentUrl = (id: number) => `${apiUrl}/vehicleAssignment/${id}`;
+
+// Vehicle Fuel Record Endpoints
+export const getAllVehicleFuelRecordsUrl = `${apiUrl}/vehicleFuelRecord/GetAllVehicleFuelRecords`;
+export const getVehicleFuelRecordByIdUrl = (id: number) => `${apiUrl}/vehicleFuelRecord/${id}`;
+export const getFuelRecordsByVehicleUrl = (vehicleId: number) => `${apiUrl}/vehicleFuelRecord/GetFuelRecordsByVehicle/${vehicleId}`;
+export const createVehicleFuelRecordUrl = `${apiUrl}/vehicleFuelRecord`;
+export const updateVehicleFuelRecordUrl = (id: number) => `${apiUrl}/vehicleFuelRecord/${id}`;
+export const deleteVehicleFuelRecordUrl = (id: number) => `${apiUrl}/vehicleFuelRecord/${id}`;
+
+// Vehicle Inspection API
+export const getAllVehicleInspectionsUrl = `${apiUrl}/vehicleInspection/GetAllVehicleInspections`;
+export const getVehicleInspectionByIdUrl = (id: number) => `${apiUrl}/vehicleInspection/${id}`;
+export const getInspectionsByVehicleUrl = (vehicleId: number) => `${apiUrl}/vehicleInspection/GetInspectionsByVehicle/${vehicleId}`;
+export const createVehicleInspectionUrl = `${apiUrl}/vehicleInspection`;
+export const updateVehicleInspectionUrl = (id: number) => `${apiUrl}/vehicleInspection/${id}`;
+export const deleteVehicleInspectionUrl = (id: number) => `${apiUrl}/vehicleInspection/${id}`;
+
+// Vehicle Inspection Detail API
+export const getAllVehicleInspectionDetailsUrl = `${apiUrl}/vehicleInspectionDetail/GetAllVehicleInspectionDetails`;
+export const getVehicleInspectionDetailByIdUrl = (id: number) => `${apiUrl}/vehicleInspectionDetail/${id}`;
+export const createVehicleInspectionDetailUrl = `${apiUrl}/vehicleInspectionDetail`;
+export const updateVehicleInspectionDetailUrl = (id: number) => `${apiUrl}/vehicleInspectionDetail/${id}`;
+export const deleteVehicleInspectionDetailUrl = (id: number) => `${apiUrl}/vehicleInspectionDetail/${id}`;
+
+// Vehicle Maintenance Record API
+export const getAllVehicleMaintenanceRecordsUrl = `${apiUrl}/vehicleMaintenanceRecord/GetAllVehicleMaintenanceRecords`;
+export const getVehicleMaintenanceRecordByIdUrl = (id: number) => `${apiUrl}/vehicleMaintenanceRecord/${id}`;
+export const createVehicleMaintenanceRecordUrl = `${apiUrl}/vehicleMaintenanceRecord`;
+export const updateVehicleMaintenanceRecordUrl = (id: number) => `${apiUrl}/vehicleMaintenanceRecord/${id}`;
+export const deleteVehicleMaintenanceRecordUrl = (id: number) => `${apiUrl}/vehicleMaintenanceRecord/${id}`;
+
+// Vehicle Maintenance Task API
+export const getAllVehicleMaintenanceTasksUrl = `${apiUrl}/vehicleMaintenanceTask/GetAllVehicleMaintenanceTasks`;
+export const getVehicleMaintenanceTaskByIdUrl = (id: number) => `${apiUrl}/vehicleMaintenanceTask/${id}`;
+export const createVehicleMaintenanceTaskUrl = `${apiUrl}/vehicleMaintenanceTask`;
+export const updateVehicleMaintenanceTaskUrl = (id: number) => `${apiUrl}/vehicleMaintenanceTask/${id}`;
+export const deleteVehicleMaintenanceTaskUrl = (id: number) => `${apiUrl}/vehicleMaintenanceTask/${id}`;
+
+// Vehicle Make API Endpoints
+export const getAllVehicleMakesUrl = `${apiUrl}/vehicleMake/GetAllVehicleMakes`;
+export const getVehicleMakeByIdUrl = (id: number) => `${apiUrl}/vehicleMake/${id}`;
+export const createVehicleMakeUrl = `${apiUrl}/vehicleMake`;
+export const updateVehicleMakeUrl = (id: number) => `${apiUrl}/vehicleMake/${id}`;
+export const deleteVehicleMakeUrl = (id: number) => `${apiUrl}/vehicleMake/${id}`;
+
+// Warehouse API Endpoints
+export const getAllWarehousesUrl = `${apiUrl}/warehouse/GetAllWarehouses`;
+export const getWarehouseByIdUrl = (id: number) => `${apiUrl}/warehouse/${id}`;
+export const createWarehouseUrl = `${apiUrl}/warehouse`;
+export const updateWarehouseUrl = (id: number) => `${apiUrl}/warehouse/${id}`;
+export const deleteWarehouseUrl = (id: number) => `${apiUrl}/warehouse/${id}`;
+
+// WarehouseRack API Endpoints
+export const getAllWarehouseRacksUrl = `${apiUrl}/warehouseRack/GetAllWarehouseRacks`;
+export const getWarehouseRackByIdUrl = (id: number) => `${apiUrl}/warehouseRack/${id}`;
+export const createWarehouseRackUrl = `${apiUrl}/warehouseRack`;
+export const updateWarehouseRackUrl = (id: number) => `${apiUrl}/warehouseRack/${id}`;
+export const deleteWarehouseRackUrl = (id: number) => `${apiUrl}/warehouseRack/${id}`;
+
+// WarehouseZone Endpoints
+export const getAllWarehouseZonesUrl = `${apiUrl}/warehouseZone/GetAllWarehouseZones`;
+export const getWarehouseZoneByIdUrl = (id: number) => `${apiUrl}/warehouseZone/${id}`;
+export const createWarehouseZoneUrl = `${apiUrl}/warehouseZone`;
+export const updateWarehouseZoneUrl = (id: number) => `${apiUrl}/warehouseZone/${id}`;
+export const deleteWarehouseZoneUrl = (id: number) => `${apiUrl}/warehouseZone/${id}`;
+
+// WorkOrder Endpoints
+export const getAllWorkOrdersUrl = `${apiUrl}/workOrder/GetAllWorkOrders`;
+export const getWorkOrderByIdUrl = (id: number) => `${apiUrl}/workOrder/${id}`;
+export const createWorkOrderUrl = `${apiUrl}/workOrder`;
+export const updateWorkOrderUrl = (id: number) => `${apiUrl}/workOrder/${id}`;
+export const deleteWorkOrderUrl = (id: number) => `${apiUrl}/workOrder/${id}`;
+
+// Work Order Material Endpoints
+export const getAllWorkOrderMaterialsUrl = `${apiUrl}/workOrderMaterial/GetAllWorkOrderMaterials`;
+export const getWorkOrderMaterialByIdUrl = (id: number) => `${apiUrl}/workOrderMaterial/${id}`;
+export const createWorkOrderMaterialUrl = `${apiUrl}/workOrderMaterial`;
+export const updateWorkOrderMaterialUrl = (id: number) => `${apiUrl}/workOrderMaterial/${id}`;
+export const deleteWorkOrderMaterialUrl = (id: number) => `${apiUrl}/workOrderMaterial/${id}`;
 
 export const getEndpointsByMethod = (method: string, endpoints: any) => {
   switch (method) {
