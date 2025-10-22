@@ -1,11 +1,14 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Eye } from "lucide-react"
 import { PriorityBadge } from "@/components/ui/custom/PriorityBadge"
+import { StatusBadge } from "@/components/ui/custom/StatusBadge"
+import { RowActions } from "@/components/ui/custom/RowActions"
+import HistoryDrawer from "@/components/common/HistoryDrawer"
 
 interface PurchaseRequisition {
   requisitionId: string
@@ -24,6 +27,8 @@ interface PurchaseRequisitionTableProps {
 export default function PurchaseRequisitionTable({ 
   data 
 }: PurchaseRequisitionTableProps) {
+  const [selectedRow, setSelectedRow] = useState<PurchaseRequisition | null>(null)
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false)
   const tableData: PurchaseRequisition[] = data.length > 0 ? data : [
     {
       requisitionId: "REQ-097-672",
@@ -128,20 +133,8 @@ export default function PurchaseRequisitionTable({
       sortable: true,
       cellRenderer: (params) => {
         const status = params.value as PurchaseRequisition["status"]       
-        const statusConfig = {
-          Pending: "text-[#A17D2C] border-[#F7E0AB]",
-          Approved: "text-blue-700 border-blue-200",
-          Approving: "text-[#308362] border-[#308362]",
-          Hold: "text-[#E42236] border-[#FF6868]",
-        }
-        
         return (
-          <Badge
-            variant="secondary"
-            className={`${statusConfig[status]} badge-flat w-20 text-sm bg-[#fff]`}
-          >
-            {status}
-          </Badge>
+          <StatusBadge status={status}/>
         )
       },
     },
@@ -149,23 +142,27 @@ export default function PurchaseRequisitionTable({
 
 
   const rowActions = (row: PurchaseRequisition) => (
-    <Button
-      size="sm"
-      variant="ghost"
-      className="text-[#3380CD] hover:text-blue-600 hover:bg-blue-50 border border-[#E6E6E6] badge-flat"  
-      onClick={() => handleViewDetails(row)}
-    >
-      <Eye className="h-4 w-4" size={12} />
-    </Button>
+    <RowActions
+      row={row}
+      actions={["view"]} 
+      onView={handleViewDetails}
+    />
   )
-
+  const sampleHistory = [
+    { id: 1, title: "REQ-12345 Created", subtitle: "updated by admin | warehouse A | location BDC" },
+    { id: 2, title: "REQ-12345 Approved", subtitle: "approved by manager | warehouse A" },
+    { id: 3, title: "REQ-12345 Closed", subtitle: "closed by supervisor | warehouse A" },
+  ]                              
   const handleViewDetails = (row: PurchaseRequisition) => {
     console.log("View details for:", row)
+        setSelectedRow(row)
+        setIsHistoryOpen(true)
     // Navigate to details page or open modal
     // router.push(`/purchase-requisition/${row.requisitionId}`)
   }
 
   return (
+    <>  
     <DataTable
       data={tableData}
       columns={columns}
@@ -193,5 +190,14 @@ export default function PurchaseRequisitionTable({
         },
       ]}
     />
+      {isHistoryOpen && (
+        <HistoryDrawer
+          open={isHistoryOpen}
+          onOpenChange={setIsHistoryOpen}
+          title={`History - ${selectedRow?.requisitionId}`}
+          history={sampleHistory}
+        />
+      )}
+    </>
   )
 }
