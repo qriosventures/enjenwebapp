@@ -3,19 +3,10 @@
 import PurchaseRequisitionTable from "@/components/procurement/purchase-requisition/PurchaseRequisitionTable";
 import { purchaseRequisitionAPI } from "@/components/api/purchaseRequisitionApi";
 import DynamicTabPage from "@/components/common/DynamicTabPage";
-import DynamicStepperForm from "@/components/common/stepper/DynamicStepperForm";
-
- export const steps = [
-    { label: 'Primary Details' },
-    { label: 'Documents' }
-  ];
- export const stepContent = [
-    <div key="step-1">Step 1: Enter Account Info</div>,
-    <div key="step-2">Step 2: Profile Details</div>
-  ];
+import SupplierRegistrationOnBoardingPage from "@/components/procurement/supplier/SupplierRegistrationOnBoardingPage";
 
 
-export default function SupplierRegistrationOnBoardingPage() {
+export default function SupplierPage() {
   return (
     <DynamicTabPage
       sectionPath="/procurement/supplier-registration-onboarding"
@@ -31,13 +22,7 @@ export default function SupplierRegistrationOnBoardingPage() {
           title: "Supplier Registration Form",
           content: () => (
             <>
-            <DynamicStepperForm steps={steps} stepContent={stepContent}/>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">
-                Create Purchase Requisition
-              </h2>
-              <p className="text-gray-600">Create form goes here</p>
-            </div>
+            <SupplierRegistrationOnBoardingPage/>
             </>
           ),
         },
