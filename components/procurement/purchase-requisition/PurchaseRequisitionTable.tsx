@@ -167,6 +167,7 @@ export default function PurchaseRequisitionTable({
       data={tableData}
       columns={columns}
       rowActions={rowActions}
+      rowActionsColumnLabel=""
       searchPlaceholder="Search requisitions..."
       height="auto"
       searchable={false}

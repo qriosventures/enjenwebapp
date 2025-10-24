@@ -6,16 +6,12 @@ import DynamicTabPage from "@/components/common/DynamicTabPage";
 import DynamicStepperForm from "@/components/common/stepper/DynamicStepperForm";
 
  export const steps = [
-    { label: 'Account Info' },
-    { label: 'Profile Details' },
-    { label: 'Upload Documents' },
-    { label: 'Review & Submit' }
+    { label: 'Primary Details' },
+    { label: 'Documents' }
   ];
  export const stepContent = [
     <div key="step-1">Step 1: Enter Account Info</div>,
-    <div key="step-2">Step 2: Profile Details</div>,
-    <div key="step-3">Step 3: Upload Documents</div>,
-    <div key="step-4">Step 4: Review Everything</div>
+    <div key="step-2">Step 2: Profile Details</div>
   ];
 
 

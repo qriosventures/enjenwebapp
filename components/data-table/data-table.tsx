@@ -1,7 +1,7 @@
 "use client"
-
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { AgGridReact } from "ag-grid-react"
+import "ag-grid-community/styles/ag-theme-alpine.css"
 import {
   ColDef,
   GridReadyEvent,
@@ -11,8 +11,6 @@ import {
   ModuleRegistry,
   AllCommunityModule,
 } from "ag-grid-community"
-import "ag-grid-community/styles/ag-grid.css"
-import "ag-grid-community/styles/ag-theme-alpine.css"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
@@ -70,15 +68,16 @@ interface DataTableProps<TData = any> {
   
   // Custom actions per row
   rowActions?: (row: TData) => React.ReactNode
+
+  rowActionsColumnLabel?: string;
   
   // AG Grid options
   gridOptions?: GridOptions
   
-  // Height
   height?: string | number
   
-  // Row click
   onRowClick?: (row: TData) => void
+  
 }
 
 export function DataTable<TData extends Record<string, any>>({
@@ -96,8 +95,9 @@ export function DataTable<TData extends Record<string, any>>({
   paginationPageSize = 20,
   paginationPageSizeSelector = [10, 20, 50, 100],
   rowActions,
+  rowActionsColumnLabel='Actions',
   gridOptions,
-  height = "600px",
+  // height = "600px",
   showCheckboxSelection=false,
   onRowClick,
 }: DataTableProps<TData>) {
@@ -107,45 +107,44 @@ export function DataTable<TData extends Record<string, any>>({
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
-  // Build column definitions
-  const columnDefs = useMemo<ColDef[]>(() => {
-    const cols: ColDef[] = []
+const columnDefs = useMemo<ColDef[]>(() => {
+  let cols: ColDef[] = [];
 
-    // Add checkbox column if row selection is enabled
-    if (rowSelection) {
-      cols.push({
-        checkboxSelection: showCheckboxSelection,
-        headerCheckboxSelection: rowSelection === "multiple",
-        width: 50,
-        lockPosition: true,
-        suppressMovable: true,
-      })
-    }
+  if (rowSelection) {
+    cols.push({
+      checkboxSelection: showCheckboxSelection,
+      headerCheckboxSelection: rowSelection === "multiple",
+      width: 50,
+      lockPosition: true,
+      suppressMovable: true,
+    });
+  }
 
-    // Add data columns
-    columns.forEach((col) => {
-      cols.push({
-        ...col,
-        filter: col.filter !== false,
-        sortable: col.sortable !== false,
-        resizable: true,
-      })
-    })
+  cols = [
+    ...cols,
+    ...columns.map((col) => ({
+      ...col,
+      filter: col.filter ?? true,
+      sortable: col.sortable ?? true,
+      resizable: true,
+    })),
+  ];
 
-    // Add actions column if row actions are provided
-    if (rowActions) {
-      cols.push({
-        headerName: "",
-        field: "actions",
-        width: 120,
-        cellRenderer: (params: any) => rowActions(params.data),
-        sortable: false,
-        filter: false,
-      })
-    }
+  if (rowActions) {
+    cols.push({
+      headerName: rowActionsColumnLabel,
+      field: "actions",
+      width: 120,
+      cellRenderer: (params: any) => rowActions(params.data),
+      sortable: false,
+      filter: false,
+    });
+  }
 
-    return cols
-  }, [columns, rowSelection, rowActions])
+  return cols;
+}, [columns, rowSelection, showCheckboxSelection, rowActions]);
+
+
 
   const defaultGridOptions: GridOptions = {
     animateRows: true,
@@ -157,8 +156,8 @@ export function DataTable<TData extends Record<string, any>>({
     paginationPageSizeSelector: paginationPageSizeSelector,
     suppressPaginationPanel: true, 
     suppressAutoSize: false,
-    domLayout: "autoHeight",
     headerHeight: 40,
+    theme: "legacy",
     ...gridOptions,
   }
 
@@ -239,7 +238,7 @@ export function DataTable<TData extends Record<string, any>>({
                 placeholder={searchPlaceholder}
                 value={searchValue}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-9"
+                className="pl-9 focus-visible:ring-0"
               />
             </div>
           )}
@@ -273,17 +272,18 @@ export function DataTable<TData extends Record<string, any>>({
           "ag-theme-alpine",
           "rounded-md border overflow-hidden"
         )} pb-2`}
-        style={{height}}
+        // style={{height}}
       >
         <AgGridReact
           ref={gridRef}
-          rowData={data}
-          columnDefs={columnDefs}
+          rowData={data || []}
+          columnDefs={columnDefs || []}
           gridOptions={defaultGridOptions}
           onGridReady={onGridReady}
           onSelectionChanged={onSelectionChanged}
           onRowClicked={onRowClicked}
           loading={loading}
+          domLayout="autoHeight"
           onPaginationChanged={updatePaginationInfo}
           defaultColDef={{
                         sortable: true,

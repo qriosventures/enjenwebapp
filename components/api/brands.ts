@@ -29,7 +29,7 @@ export const brandsAPI = async (payload?: BrandDto, method?: string) => {
     }
 
     const data = await response.json();
-    if (!isGet) revalidatePath('/brands');
+    if (!isGet) revalidatePath('/settings/brands');
     return { status: 200, data };
   } catch (error: any) {
     console.error('Error in brands API:', error);
