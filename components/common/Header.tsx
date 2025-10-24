@@ -21,9 +21,13 @@ import {
   ArrowDownToDot,
   ReceiptText,
   NotebookText,
+  Settings,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTabContext } from "@/components/conetxt/TabContext";
+import SettingsDrawer from "../settings/common/SettingsDrawer";
+import { settingsItems } from "../settings/common/setting-items";
+import { Button } from "../ui/button";
 
 interface NavItem {
   title: string;
@@ -46,7 +50,7 @@ const navItems: NavItem[] = [
         path: "/procurement/supplier-registration-onboarding",
         icon: <i className="bi bi-tag me-2"></i>,
         useTabs: true,
-        tabKeys: ["Overview", "Registration", "Approvals", "Manage Suppliers"]
+        tabKeys: ["Overview", "Registration", "Approvals", "Manage Suppliers"],
       },
       {
         title: "Purchase Requisition",
@@ -64,8 +68,8 @@ const navItems: NavItem[] = [
         title: "Supplier Performance Tracking",
         icon: <i className="bi bi-globe me-2"></i>,
         tabKeys: ["Dashboard", "Reports", "Settings"],
-        useTabs: true
-      }
+        useTabs: true,
+      },
     ],
   },
   { title: "Warehouse", path: "/warehouse", icon: <Warehouse size={20} /> },
@@ -87,6 +91,7 @@ const Header: React.FC = () => {
   } | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
@@ -189,14 +194,23 @@ const Header: React.FC = () => {
     return item.path ? pathname === item.path : false;
   };
 
-  const shouldShowSecondLevel = 
-    activeTop || (persistentSection && !persistentSection.hasThirdLevel && !persistentSection.secondItem?.useTabs);
+  const shouldShowSecondLevel =
+    activeTop ||
+    (persistentSection &&
+      !persistentSection.hasThirdLevel &&
+      !persistentSection.secondItem?.useTabs);
 
   const shouldShowThirdLevel =
-    activeSecond || (persistentSection && (persistentSection?.hasThirdLevel || persistentSection?.secondItem?.useTabs));
+    activeSecond ||
+    (persistentSection &&
+      (persistentSection?.hasThirdLevel ||
+        persistentSection?.secondItem?.useTabs));
 
-
-  const handleTabClick = (e: React.MouseEvent, tabKey: string, sectionPath: string) => {
+  const handleTabClick = (
+    e: React.MouseEvent,
+    tabKey: string,
+    sectionPath: string
+  ) => {
     e.preventDefault();
     setActiveTab(sectionPath, tabKey);
   };
@@ -267,9 +281,7 @@ const Header: React.FC = () => {
                             setActiveSecond(null);
                           }}
                           className={`flex items-center gap-2 cursor-pointer px-4 py-2 rounded-md ${
-                            active
-                              ? "bg-[#292B2D] transition font-medium"
-                              : ""
+                            active ? "bg-[#292B2D] transition font-medium" : ""
                           }`}
                         >
                           <div>{item.icon}</div>
@@ -289,7 +301,24 @@ const Header: React.FC = () => {
                   </div>
                 );
               })}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setSettingsOpen(true)}
+                  className={`group flex items-center gap-2 cursor-pointer px-4 py-2 rounded-md text-gray-400 hover:text-[#98FF4F] transition-all duration-200 hover:bg-[#292B2D]`}
+                >
+                  <Settings size={20} />
+                  <span className="ml-1 text-sm font-medium text-[#98FF4F] whitespace-nowrap overflow-hidden transition-all duration-300 transform max-w-0 opacity-0 -translate-x-2 group-hover:max-w-[160px] group-hover:opacity-100 group-hover:translate-x-0">
+                    Settings
+                  </span>
+                </button>
+              </div>
             </nav>
+            <SettingsDrawer
+              open={settingsOpen}
+              onClose={() => setSettingsOpen(false)}
+              items={settingsItems}
+            />
           </div>
 
           <div className="flex items-center gap-1 rounded-full bg-[#2A2D31] text-[#777C87] p-1">
@@ -377,7 +406,13 @@ const Header: React.FC = () => {
                           activeSecond?.childIndex === cIdx) ||
                         (persistentSection?.topIndex === section.idx &&
                           persistentSection?.childIndex === cIdx);
-                          console.log(activeSecond, 'child>>>>>>>>>>',section, cIdx,persistentSection);
+                      console.log(
+                        activeSecond,
+                        "child>>>>>>>>>>",
+                        section,
+                        cIdx,
+                        persistentSection
+                      );
                       const hasGrandChildren = !!child.children?.length;
 
                       if (hasGrandChildren) {
@@ -403,7 +438,9 @@ const Header: React.FC = () => {
                           <Link
                             key={cIdx}
                             href={child.path}
-                            onClick={() => handleSecondClick(section.idx, cIdx, child)}
+                            onClick={() =>
+                              handleSecondClick(section.idx, cIdx, child)
+                            }
                             className={`flex items-center gap-2 px-2 py-2 rounded-md text-sm transition ${
                               isChildActive
                                 ? "bg-gradient-to-br from-[#2D7F27] to-[#54AD12] text-white rounded-lg shadow-sm"
@@ -430,12 +467,15 @@ const Header: React.FC = () => {
                 activeSecond.childIndex
               ]
             : persistentSection?.secondItem;
-              console.log(section, 'section>>>>>>>>>>>');
+          console.log(section, "section>>>>>>>>>>>");
           if (!section) return null;
 
           const useTabs = section.useTabs;
-          const tabsToRender = useTabs && section.tabKeys ? section.tabKeys : section.children?.map(c => c.title) || [];
-          
+          const tabsToRender =
+            useTabs && section.tabKeys
+              ? section.tabKeys
+              : section.children?.map((c) => c.title) || [];
+
           if (tabsToRender.length === 0) return null;
 
           return (
@@ -444,42 +484,43 @@ const Header: React.FC = () => {
                 <div className="flex items-center justify-center py-2">
                   <div className="flex justify-center">
                     <div className="flex gap-3 bg-[#1B1C1E] px-3 py-1 rounded-md">
-                      {useTabs ? (
-                        tabsToRender.map((tabKey) => {
-                          const active = getActiveTab(section.path || "") === tabKey;
-                          return (
-                            <button
-                              key={tabKey}
-                              onClick={(e) => handleTabClick(e, tabKey, section.path || "")}
-                              className={`px-5 py-2 rounded-md text-sm font-medium transition-all m-1 ${
-                                active
-                                  ? "bg-gradient-to-br from-[#2D7F27] to-[#54AD12] text-white rounded-lg"
-                                  : "text-gray-300 hover:bg-[#3a3d41] hover:text-white"
-                              }`}
-                            >
-                              {tabKey}
-                            </button>
-                          );
-                        })
-                      ) : (
-                        section?.children?.map((sub, sIdx) => {
-                          const active =
-                            sub.path && pathname.startsWith(sub.path);
-                          return (
-                            <Link
-                              key={sIdx}
-                              href={sub.path || "#"}
-                              className={`px-5 py-2 rounded-md text-sm font-medium transition-all m-1 ${
-                                active
-                                  ? "bg-gradient-to-br from-[#2D7F27] to-[#54AD12] text-white rounded-lg"
-                                  : "text-gray-300 hover:bg-[#3a3d41] hover:text-white"
-                              }`}
-                            >
-                              {sub.title}
-                            </Link>
-                          );
-                        })
-                      )}
+                      {useTabs
+                        ? tabsToRender.map((tabKey) => {
+                            const active =
+                              getActiveTab(section.path || "") === tabKey;
+                            return (
+                              <button
+                                key={tabKey}
+                                onClick={(e) =>
+                                  handleTabClick(e, tabKey, section.path || "")
+                                }
+                                className={`px-5 py-2 rounded-md text-sm font-medium transition-all m-1 ${
+                                  active
+                                    ? "bg-gradient-to-br from-[#2D7F27] to-[#54AD12] text-white rounded-lg"
+                                    : "text-gray-300 hover:bg-[#3a3d41] hover:text-white"
+                                }`}
+                              >
+                                {tabKey}
+                              </button>
+                            );
+                          })
+                        : section?.children?.map((sub, sIdx) => {
+                            const active =
+                              sub.path && pathname.startsWith(sub.path);
+                            return (
+                              <Link
+                                key={sIdx}
+                                href={sub.path || "#"}
+                                className={`px-5 py-2 rounded-md text-sm font-medium transition-all m-1 ${
+                                  active
+                                    ? "bg-gradient-to-br from-[#2D7F27] to-[#54AD12] text-white rounded-lg"
+                                    : "text-gray-300 hover:bg-[#3a3d41] hover:text-white"
+                                }`}
+                              >
+                                {sub.title}
+                              </Link>
+                            );
+                          })}
                     </div>
                   </div>
                 </div>
