@@ -50,16 +50,16 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
           <form onSubmit={methods.handleSubmit(onSave)}>
             {children}
             <div className="mt-4 flex justify-end gap-2">
-              <Button type="button" variant="outline" className="cursor-pointer" onClick={onClose}>
+              <Button type="button" variant="outline" className="cursor-pointer font-semibold hover:bg-red-600 hover:text-white rounded-[5px]" onClick={onClose}>
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer rounded-[5px]"
               >
                 {isSaving && (
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  <span className="w-4 h-4 border-2 font-semibold border-white border-t-transparent rounded-full animate-spin"></span>
                 )}
                 {isSaving ? "Saving..." : "Save"}
               </Button>

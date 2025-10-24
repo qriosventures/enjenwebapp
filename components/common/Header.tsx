@@ -467,7 +467,6 @@ const Header: React.FC = () => {
                 activeSecond.childIndex
               ]
             : persistentSection?.secondItem;
-          console.log(section, "section>>>>>>>>>>>");
           if (!section) return null;
 
           const useTabs = section.useTabs;

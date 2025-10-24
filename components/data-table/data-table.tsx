@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Search, Settings2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { addSequentialId } from "@/lib/utils/sequenceData"
 
 
 // Register AG Grid modules
@@ -227,6 +228,8 @@ const columnDefs = useMemo<ColDef[]>(() => {
     [onRowClick]
   )
 
+  const sequencedData = addSequentialId(data, "id");
+
   return (
     <div className={cn("space-y-4", className)}>
       {(searchable || (bulkActions && selectedRows.length > 0)) && (
@@ -276,7 +279,7 @@ const columnDefs = useMemo<ColDef[]>(() => {
       >
         <AgGridReact
           ref={gridRef}
-          rowData={data || []}
+          rowData={sequencedData || []}
           columnDefs={columnDefs || []}
           gridOptions={defaultGridOptions}
           onGridReady={onGridReady}
