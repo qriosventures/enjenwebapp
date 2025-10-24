@@ -9,6 +9,7 @@ import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
 import { brandsAPI } from "@/components/api/brands";
+import {showToastMessage} from "@/components/common/ToastMessage";
 
 type BrandsType = {
   id: number;
@@ -22,12 +23,12 @@ type Props = {
 const BrandSettings = ({ brandsListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<BrandsType | null>(null);
-
+  const [isSaving, setIsSaving] = useState(false);
   const brands = React.useMemo(() => brandsListData || [], [brandsListData]);
 
   const columns: DataTableColumn<BrandsType>[] = [
-    { field: "id", headerName: "ID",width: 100 },
-    { field: "name", headerName: "Brand Name",flex: 1 },
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "name", headerName: "Brand Name", flex: 1 },
   ];
 
   const handleEdit = (row: BrandsType) => {
@@ -40,48 +41,51 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (row: BrandsType) => {
-    try {
-      const payload = { id: row.id };
-      const result = await brandsAPI(payload, "DELETE");
-      console.log(result, "Brand deleted successfully");
-    } catch (err) {
-      console.error("Failed to delete brand", err);
-    }
-  };
+const handleDelete = async (row: BrandsType) => {
+  const payload = { id: row.id };
+  await showToastMessage.promise(brandsAPI(payload, "DELETE"), {
+    loading: "Deleting brand...",
+    success: (res:any) => res?.data?.message || "Deleted successfully",
+    error: (err:any) => err?.data?.message || "Failed to delete",
+  });
+};
 
-const brandSchema = z.object({
-  id: z.number().optional(),
-  name: z
-    .string()
-    .min(1, "Brand name is required")
-    .min(3, "Brand name must be at least 3 characters")
-    .default(""),
-});
+
+  const brandSchema = z.object({
+    id: z.number().optional(),
+    name: z
+      .string()
+      .min(1, "Brand name is required")
+      .min(3, "Brand name must be at least 3 characters")
+      .default(""),
+  });
 
   const handleSave = async (data: any) => {
-    try {
-      const payload = brandSchema.parse(data);
+  try {
+   setIsSaving(true)
 
-      if (editingItem) {
-        payload.id = editingItem.id;
-        const result = await brandsAPI(payload, "PUT");
-        console.log(result, "Brand updated successfully");
-      } else {
-        const res = await brandsAPI(payload, "POST");
-        console.log(res, "Brand added successfully");
-      }
+    const payload = brandSchema.parse(data);
 
-      setIsModalOpen(false);
-      setEditingItem(null);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        console.error("Validation error:", err.issues);
-      } else {
-        console.error(err);
-      }
+    const request = editingItem
+      ? brandsAPI({ ...payload, id: editingItem.id }, "PUT")
+      : brandsAPI(payload, "POST");
+
+    await showToastMessage.promise(request, {
+      loading: editingItem ? "Updating brand..." : "Adding brand...",
+      success: (res:any) => res?.data?.message || "Brand Added Successfully!",
+      error: (err:any) => err?.data?.message || "Failed To Add Brand",
+    });
+
+    setIsModalOpen(false);
+    setEditingItem(null);
+   setIsSaving(false)
+
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      showToastMessage.error(err.issues[0].message);
     }
-  };
+  }
+};
 
   const rowActions = (row: BrandsType) => (
     <RowActions
@@ -138,6 +142,7 @@ const brandSchema = z.object({
           title={editingItem ? `Edit Brand` : `Add Brand`}
           defaultValues={editingItem || { name: "" }}
           schema={brandSchema}
+          isSaving={isSaving}
         >
           <FormField name="name" label="Brand Name" placeholder="Brand Name" />
         </CrudFormModal>
