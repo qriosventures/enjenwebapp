@@ -1,4 +1,4 @@
 export interface ItemTypeDto {
   id?: number;
-  name: string;
+  name?: string;
 }

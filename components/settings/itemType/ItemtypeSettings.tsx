@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table";
 import { RowActions } from "@/components/ui/custom/RowActions";
 import { Button } from "@/components/ui/button";
@@ -8,29 +8,30 @@ import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { brandsAPI } from "@/components/api/brands";
+import { showToastMessage } from "@/components/common/ToastMessage";
+import { itemTypeAPI } from "@/components/api/itemTypeApi";
 
-type BrandsType = {
+type ItemTypeType = {
   id: number;
   name: string;
 };
 
 type Props = {
-  brandsListData?: BrandsType[];
+  itemTypeListData?: ItemTypeType[];
 };
 
-const BrandSettings = ({ brandsListData = [] }: Props) => {
+const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<BrandsType | null>(null);
+  const [editingItem, setEditingItem] = useState<ItemTypeType | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const itemType = React.useMemo(() => itemTypeListData || [], [itemTypeListData]);
 
-  const brands = React.useMemo(() => brandsListData || [], [brandsListData]);
-
-  const columns: DataTableColumn<BrandsType>[] = [
+  const columns: DataTableColumn<ItemTypeType>[] = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Brand Name", flex: 1 },
+    { field: "name", headerName: "ItemType Name", flex: 1 },
   ];
 
-  const handleEdit = (row: BrandsType) => {
+  const handleEdit = (row: ItemTypeType) => {
     setEditingItem(row);
     setIsModalOpen(true);
   };
@@ -40,50 +41,52 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (row: BrandsType) => {
-    try {
-      const payload = { id: row.id };
-      const result = await brandsAPI(payload, "DELETE");
-      console.log(result, "Brand deleted successfully");
-    } catch (err) {
-      console.error("Failed to delete brand", err);
-    }
+  const handleDelete = async (row: ItemTypeType) => {
+    const payload = { id: row.id };
+    await showToastMessage.promise(itemTypeAPI(payload, "DELETE"), {
+      loading: "Deleting itemType...",
+      success: (res: any) => res?.data?.message || "Deleted successfully",
+      error: (err: any) => err?.data?.message || "Failed to delete",
+    });
   };
 
-  const brandSchema = z.object({
+  const itemTypeSchema = z.object({
     id: z.number().optional(),
     name: z
       .string()
-      .min(1, "Brand name is required")
-      .min(3, "Brand name must be at least 3 characters")
+      .min(1, "ItemType name is required")
+      .min(3, "ItemType name must be at least 3 characters")
       .default(""),
   });
 
   const handleSave = async (data: any) => {
     try {
-      const payload = brandSchema.parse(data);
+      setIsSaving(true)
 
-      if (editingItem) {
-        payload.id = editingItem.id;
-        const result = await brandsAPI(payload, "PUT");
-        console.log(result, "Brand updated successfully");
-      } else {
-        const res = await brandsAPI(payload, "POST");
-        console.log(res, "Brand added successfully");
-      }
+      const payload = itemTypeSchema.parse(data);
+
+      const request = editingItem
+        ? itemTypeAPI({ ...payload, id: editingItem.id }, "PUT")
+        : itemTypeAPI(payload, "POST");
+
+      await showToastMessage.promise(request, {
+        loading: editingItem ? "Updating itemType..." : "Adding itemType...",
+        success: (res: any) => res?.data?.message || "ItemType Added Successfully!",
+        error: (err: any) => err?.data?.message || "Failed To Add ItemType",
+      });
 
       setIsModalOpen(false);
       setEditingItem(null);
+      setIsSaving(false)
+
     } catch (err) {
       if (err instanceof z.ZodError) {
-        console.error("Validation error:", err.issues);
-      } else {
-        console.error(err);
+        showToastMessage.error(err.issues[0].message);
       }
     }
   };
 
-  const rowActions = (row: BrandsType) => (
+  const rowActions = (row: ItemTypeType) => (
     <RowActions
       row={row}
       actions={["edit", "delete"]}
@@ -95,24 +98,24 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Brands</h2>
+        <h2 className="text-xl font-semibold">ItemTypes</h2>
         <Button onClick={handleAdd} className="cursor-pointer">
           <Plus className="w-4 h-4 mr-2" />
-          Add Brand
+          Add ItemType
         </Button>
       </div>
 
-      {brands.length === 0 ? (
+      {itemType.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          No brands found. Click "Add Brand" to create one.
+          No itemType found. Click "Add ItemType" to create one.
         </div>
       ) : (
         <DataTable
-          data={brands}
+          data={itemType}
           columns={columns}
           rowActions={rowActions}
           rowActionsColumnLabel="Actions"
-          searchPlaceholder="Search brands..."
+          searchPlaceholder="Search itemType..."
           searchable={true}
           pagination={false}
           showCheckboxSelection={false}
@@ -135,15 +138,16 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSave={handleSave}
-          title={editingItem ? `Edit Brand` : `Add Brand`}
+          title={editingItem ? `Edit ItemType` : `Add ItemType`}
           defaultValues={editingItem || { name: "" }}
-          schema={brandSchema}
+          schema={itemTypeSchema}
+          isSaving={isSaving}
         >
-          <FormField name="name" label="Brand Name" placeholder="Brand Name" />
+          <FormField name="name" label="ItemType Name" placeholder="ItemType Name" />
         </CrudFormModal>
       )}
     </div>
   );
 };
 
-export default BrandSettings;
+export default ItemTypeSettings;
