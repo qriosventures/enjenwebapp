@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table";
 import { RowActions } from "@/components/ui/custom/RowActions";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { showToastMessage } from "@/components/common/ToastMessage";
 import { itemTypeAPI } from "@/components/api/itemTypeApi";
 
 type ItemTypeType = {
@@ -23,12 +22,12 @@ type Props = {
 const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ItemTypeType | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+
   const itemType = React.useMemo(() => itemTypeListData || [], [itemTypeListData]);
 
   const columns: DataTableColumn<ItemTypeType>[] = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "ItemType Name", flex: 1 },
+    { field: "name", headerName: "Brand Name", flex: 1 },
   ];
 
   const handleEdit = (row: ItemTypeType) => {
@@ -42,12 +41,13 @@ const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
   };
 
   const handleDelete = async (row: ItemTypeType) => {
-    const payload = { id: row.id };
-    await showToastMessage.promise(itemTypeAPI(payload, "DELETE"), {
-      loading: "Deleting itemType...",
-      success: (res: any) => res?.data?.message || "Deleted successfully",
-      error: (err: any) => err?.data?.message || "Failed to delete",
-    });
+    try {
+      const payload = { id: row.id };
+      const result = await itemTypeAPI(payload, "DELETE");
+      console.log(result, "ItemType deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete itemType", err);
+    }
   };
 
   const itemTypeSchema = z.object({
@@ -61,27 +61,24 @@ const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
 
   const handleSave = async (data: any) => {
     try {
-      setIsSaving(true)
-
       const payload = itemTypeSchema.parse(data);
 
-      const request = editingItem
-        ? itemTypeAPI({ ...payload, id: editingItem.id }, "PUT")
-        : itemTypeAPI(payload, "POST");
-
-      await showToastMessage.promise(request, {
-        loading: editingItem ? "Updating itemType..." : "Adding itemType...",
-        success: (res: any) => res?.data?.message || "ItemType Added Successfully!",
-        error: (err: any) => err?.data?.message || "Failed To Add ItemType",
-      });
+      if (editingItem) {
+        payload.id = editingItem.id;
+        const result = await itemTypeAPI(payload, "PUT");
+        console.log(result, "ItemType updated successfully");
+      } else {
+        const res = await itemTypeAPI(payload, "POST");
+        console.log(res, "ItemType added successfully");
+      }
 
       setIsModalOpen(false);
       setEditingItem(null);
-      setIsSaving(false)
-
     } catch (err) {
       if (err instanceof z.ZodError) {
-        showToastMessage.error(err.issues[0].message);
+        console.error("Validation error:", err.issues);
+      } else {
+        console.error(err);
       }
     }
   };
@@ -98,7 +95,7 @@ const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">ItemTypes</h2>
+        <h2 className="text-xl font-semibold">ItemType</h2>
         <Button onClick={handleAdd} className="cursor-pointer">
           <Plus className="w-4 h-4 mr-2" />
           Add ItemType
@@ -141,7 +138,6 @@ const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
           title={editingItem ? `Edit ItemType` : `Add ItemType`}
           defaultValues={editingItem || { name: "" }}
           schema={itemTypeSchema}
-          isSaving={isSaving}
         >
           <FormField name="name" label="ItemType Name" placeholder="ItemType Name" />
         </CrudFormModal>
