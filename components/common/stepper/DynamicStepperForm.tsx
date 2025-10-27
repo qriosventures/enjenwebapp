@@ -1,43 +1,50 @@
-'use client';
+"use client";
 
-import { Stepper } from '@/components/common/stepper/Stepper';
-import React, { useState } from 'react';
+import { Stepper } from "@/components/common/stepper/Stepper";
+import React, { useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 type Step = { label: string };
 
 type DynamicStepperFormProps = {
   steps: Step[];
   stepContent: React.ReactNode[];
+  stepFields: string[][] | any; 
 };
 
-const DynamicStepperForm = ({ steps, stepContent }: DynamicStepperFormProps) => {
+const DynamicStepperForm = ({
+  steps,
+  stepContent,
+  stepFields,
+}: DynamicStepperFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const { trigger } = useFormContext();
 
-  const goNext = () => {
+  const goNext = async () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
+      const isValid = await trigger(stepFields[currentStep]);
+      if (isValid) {
+        setCurrentStep((prev) => prev + 1);
+      }
     }
   };
 
   const goBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-    }
+    if (currentStep > 0) setCurrentStep((prev) => prev - 1);
   };
 
   return (
-    <div className="mx-auto p-6 space-y-6">
+    <div className="mx-auto space-y-6">
       <Stepper steps={steps} currentStep={currentStep} />
-      <div className="mt-6 border rounded-md p-4 bg-white">
-        {stepContent[currentStep]}
-      </div>
-
+      <div className="mt-6 rounded-md p-4 bg-white">{stepContent[currentStep]}</div>
       <div className="flex justify-between">
-        <div className='text-sm font-semibold'>
-          <span className='text-[#1B1C1E]'>Step  {currentStep + 1}/</span>
-          <span className='text-[#A1A98A]'>{steps.length}</span>
+        <div className="text-sm font-semibold">
+          <div className="text-[#1B1C1E]">
+            <span className="mr-2.5">Step</span>
+            {currentStep + 1} /<span className="text-[#A1A98A]"> {steps.length}</span>
+          </div>
         </div>
-        <div className='flex items-center gap-4'>
+        <div className="flex items-center gap-4">
           <button
             onClick={goBack}
             disabled={currentStep === 0}
@@ -46,11 +53,11 @@ const DynamicStepperForm = ({ steps, stepContent }: DynamicStepperFormProps) => 
             Back
           </button>
           <button
-            onClick={goNext}
-            disabled={currentStep === steps.length - 1}
+            type={currentStep === steps.length - 1 ? "submit" : "button"}
+            onClick={currentStep === steps.length - 1 ? undefined : goNext}
             className="px-4 py-2 bg-black text-white rounded text-sm font-semibold disabled:opacity-50 cursor-pointer"
           >
-            Next
+            {currentStep === steps.length - 1 ? "Submit" : "Next"}
           </button>
         </div>
       </div>

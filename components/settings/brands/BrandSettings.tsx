@@ -9,10 +9,13 @@ import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
 import { brandsAPI } from "@/components/api/brands";
+import { showToastMessage } from "@/components/common/ToastMessage";
+import CustomButton from "@/components/ui/custom/CustomButton";
 
 type BrandsType = {
   id: number;
   name: string;
+  dbId?: number;
 };
 
 type Props = {
@@ -22,6 +25,7 @@ type Props = {
 const BrandSettings = ({ brandsListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<BrandsType | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const brands = React.useMemo(() => brandsListData || [], [brandsListData]);
 
@@ -41,13 +45,12 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
   };
 
   const handleDelete = async (row: BrandsType) => {
-    try {
-      const payload = { id: row.id };
-      const result = await brandsAPI(payload, "DELETE");
-      console.log(result, "Brand deleted successfully");
-    } catch (err) {
-      console.error("Failed to delete brand", err);
-    }
+    const payload = { id: row.dbId };
+    await showToastMessage.promise(brandsAPI(payload, "DELETE"), {
+      loading: "Deleting brand...",
+      success: (res: any) => res?.data?.message || "Deleted successfully",
+      error: (err: any) => err?.data?.message || "Failed to delete",
+    });
   };
 
   const brandSchema = z.object({
@@ -61,24 +64,27 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
 
   const handleSave = async (data: any) => {
     try {
+      setIsSaving(true);
+
       const payload = brandSchema.parse(data);
 
-      if (editingItem) {
-        payload.id = editingItem.id;
-        const result = await brandsAPI(payload, "PUT");
-        console.log(result, "Brand updated successfully");
-      } else {
-        const res = await brandsAPI(payload, "POST");
-        console.log(res, "Brand added successfully");
-      }
+      const request = editingItem
+        ? brandsAPI({ ...payload, id: editingItem.dbId }, "PUT")
+        : brandsAPI(payload, "POST");
+
+      await showToastMessage.promise(request, {
+        loading: editingItem ? "Updating brand..." : "Adding brand...",
+        success: (res: any) =>
+          res?.data?.message || "Brand Added Successfully!",
+        error: (err: any) => err?.data?.message || "Failed To Add Brand",
+      });
 
       setIsModalOpen(false);
       setEditingItem(null);
+      setIsSaving(false);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        console.error("Validation error:", err.issues);
-      } else {
-        console.error(err);
+        showToastMessage.error(err.issues[0].message);
       }
     }
   };
@@ -96,10 +102,12 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Brands</h2>
-        <Button onClick={handleAdd} className="cursor-pointer">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Brand
-        </Button>
+        <CustomButton
+          onClick={handleAdd}
+          icon={<Plus strokeWidth={2.2} className="mr-2"/>}
+          className="cursor-pointer"
+          children={"Add Brand"}
+        />
       </div>
 
       {brands.length === 0 ? (
