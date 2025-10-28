@@ -37,7 +37,7 @@ export interface SettingsItem {
   label: string;
   icon: JSX.Element;
   className?: string;
-  tag?: "global" | "regional";  
+  tag?: "global" | "regional";
   children?: SettingsItem[];
 }
 
@@ -47,7 +47,7 @@ export const settingsItems: SettingsItem[] = [
     icon: <Settings className="w-4 h-4 mr-3 text-blue-600" />,
     children: [
       {
-        href: "/settings/country",
+        href: "/settings/countries",
         label: "Country",
         icon: <Globe className="w-4 h-4 mr-3 text-green-600" />,
       },
@@ -56,7 +56,7 @@ export const settingsItems: SettingsItem[] = [
         label: "State",
         icon: <Map className="w-4 h-4 mr-3 text-green-500" />,
       },
-    {
+      {
         href: "/settings/language",
         label: "Language",
         icon: <Languages className="w-4 h-4 mr-3 text-purple-600" />,
@@ -67,7 +67,7 @@ export const settingsItems: SettingsItem[] = [
         icon: <DollarSign className="w-4 h-4 mr-3 text-orange-600" />,
       },
       {
-        href: "/settings/unit-measurement",
+        href: "/settings/unit-measures",
         label: "Units of Measurement",
         icon: <Ruler className="w-4 h-4 mr-3 text-emerald-500" />,
       },
@@ -75,7 +75,19 @@ export const settingsItems: SettingsItem[] = [
         href: "/settings/brands",
         label: "Brands",
         icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
+      },
+      {
+        href: "/settings/item-types",
+        label: "Item Types",
+        icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
+      },
+      {
+        href: "/settings/payment-terms",
+        label: "Payment Terms",
+        icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
       }
+
+
     ],
   },
   {
@@ -129,7 +141,7 @@ export const settingsItems: SettingsItem[] = [
         label: "Bill Of Materials",
         icon: <BrickWallIcon className="w-4 h-4 mr-3 text-blue-600" />,
       },
-      
+
     ],
   },
 ];

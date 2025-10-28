@@ -41,7 +41,7 @@ export const itemTypeAPI = async (payload?: ItemTypeDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/item-types');
+    if (!isGet) revalidatePath('/settings/item-types');
 
     return { status: 200, data };
   } catch (error: any) {

@@ -146,6 +146,7 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
           title={editingItem ? `Edit Brand` : `Add Brand`}
           defaultValues={editingItem || { name: "" }}
           schema={brandSchema}
+          isSaving={isSaving}
         >
           <FormField name="name" label="Brand Name" placeholder="Brand Name" />
         </CrudFormModal>

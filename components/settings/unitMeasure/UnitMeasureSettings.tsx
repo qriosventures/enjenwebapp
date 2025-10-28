@@ -3,38 +3,42 @@
 import React, { useEffect, useState } from "react";
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table";
 import { RowActions } from "@/components/ui/custom/RowActions";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { paymentTermAPI } from "@/components/api/paymentTermApi";
+import { unitMeasureAPI } from "@/components/api/unitMeasureApi";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 
-type PaymentTermType = {
+type UnitMeasureType = {
     id: number;
-    name: string;
+    unitName: string;
     dbId?: number;
 };
 
 type Props = {
-    paymentTermListData?: PaymentTermType[];
+    unitMeasureListData?: UnitMeasureType[];
 };
 
-const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
+const UnitMeasureSettings = ({ unitMeasureListData = [] }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingItem, setEditingItem] = useState<PaymentTermType | null>(null);
+    const [editingItem, setEditingItem] = useState<UnitMeasureType | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const paymentTerm = React.useMemo(() => paymentTermListData || [], [paymentTermListData]);
+    const unitMeasure = React.useMemo(() => unitMeasureListData || [], [unitMeasureListData]);
+    console.log(unitMeasure, "unitMeasureListData in UnitMeasureSettings component");
+    const transformedUnitMeasure = unitMeasure?.map((item) => ({
+        ...item,
+        name: item.unitName,
+    }));
 
-    const columns: DataTableColumn<PaymentTermType>[] = [
+    const columns: DataTableColumn<UnitMeasureType>[] = [
         { field: "id", headerName: "ID", width: 100 },
-        { field: "name", headerName: "Payment Term", flex: 1 },
+        { field: "unitName", headerName: "UnitMeasure Name", flex: 1 },
     ];
 
-    const handleEdit = (row: PaymentTermType) => {
+    const handleEdit = (row: UnitMeasureType) => {
         setEditingItem(row);
         setIsModalOpen(true);
     };
@@ -44,39 +48,41 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (row: PaymentTermType) => {
+    const handleDelete = async (row: UnitMeasureType) => {
         const payload = { id: row.dbId };
-        await showToastMessage.promise(paymentTermAPI(payload, "DELETE"), {
-            loading: "Deleting Payment Term...",
-            success: (res: any) => res?.data?.message || "Payment Term Deleted successfully",
-            error: (err: any) => err?.data?.message || "Payment Term Failed to delete",
+        await showToastMessage.promise(unitMeasureAPI(payload, "DELETE"), {
+            loading: "Deleting Unit Measure...",
+            success: (res: any) => res?.data?.message || "Unit Measure Deleted Successfully",
+            error: (err: any) => err?.data?.message || "Failed To Delete Unit Measure",
         });
     };
 
-    const paymentTermSchema = z.object({
+    const unitMeasureSchema = z.object({
         id: z.number().optional(),
         name: z
             .string()
-            .min(1, "PaymentTerm name is required")
-            .min(3, "PaymentTerm name must be at least 3 characters")
+            .min(1, "UnitMeasure name is required")
+            .min(3, "UnitMeasure name must be at least 3 characters")
             .default(""),
     });
 
     const handleSave = async (data: any) => {
         try {
             setIsSaving(true);
-
-            const payload = paymentTermSchema.parse(data);
+            const payload = unitMeasureSchema?.parse(data);
+            const transformedPayload = {
+            unitName: payload.name,
+            };
 
             const request = editingItem
-                ? paymentTermAPI({ ...payload, id: editingItem?.dbId }, "PUT")
-                : paymentTermAPI(payload, "POST");
+                ? unitMeasureAPI({ ...transformedPayload, id: editingItem?.dbId }, "PUT")
+                : unitMeasureAPI(transformedPayload, "POST");
 
             await showToastMessage.promise(request, {
-                loading: editingItem ? "Updating paymentTerm..." : "Adding paymentTerm...",
+                loading: editingItem ? "Updating Unit Measure..." : "Adding Unit Measure...",
                 success: (res: any) =>
-                    res?.data?.message || "PaymentTerm Added Successfully!",
-                error: (err: any) => err?.data?.message || "Failed To Add PaymentTerm",
+                   res?.data?.message || "Unit Measure Added Successfully!",
+                error: (err: any) => err?.data?.message || "Failed To Add Unit Measure",
             });
 
             setIsModalOpen(false);
@@ -84,12 +90,12 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
             setIsSaving(false);
         } catch (err) {
             if (err instanceof z.ZodError) {
-                showToastMessage.error(err?.issues[0]?.message);
+                showToastMessage.error(err.issues[0].message);
             }
         }
     };
 
-    const rowActions = (row: PaymentTermType) => (
+    const rowActions = (row: UnitMeasureType) => (
         <RowActions
             row={row}
             actions={["edit", "delete"]}
@@ -101,26 +107,26 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">PaymentTerm</h2>
+                <h2 className="text-xl font-semibold">UnitMeasure</h2>
                 <CustomButton
                     onClick={handleAdd}
                     icon={<Plus strokeWidth={2.2} className="mr-2" />}
                     className="cursor-pointer"
-                    children={"Add PaymentTerm"}
+                    children={"Add UnitMeasure"}
                 />
             </div>
 
-            {paymentTerm?.length === 0 ? (
+            {transformedUnitMeasure?.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">
-                    No paymentTerm found. Click "Add PaymentTerm" to create one.
+                    No unitMeasure found. Click "Add UnitMeasure" to create one.
                 </div>
             ) : (
                 <DataTable
-                    data={paymentTerm}
+                    data={transformedUnitMeasure}
                     columns={columns}
                     rowActions={rowActions}
                     rowActionsColumnLabel="Actions"
-                    searchPlaceholder="Search paymentTerm..."
+                    searchPlaceholder="Search unitMeasure..."
                     searchable={true}
                     pagination={false}
                     showCheckboxSelection={false}
@@ -143,16 +149,16 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     onSave={handleSave}
-                    title={editingItem ? `Edit PaymentTerm` : `Add PaymentTerm`}
+                    title={editingItem ? `Edit UnitMeasure` : `Add UnitMeasure`}
                     defaultValues={editingItem || { name: "" }}
-                    schema={paymentTermSchema}
+                    schema={unitMeasureSchema}
                     isSaving={isSaving}
                 >
-                    <FormField name="name" label="PaymentTerm Name" placeholder="PaymentTerm Name" />
+                    <FormField name="name" label="Unit Measure Name" placeholder="Unit Measure Name" />
                 </CrudFormModal>
             )}
         </div>
     );
 };
 
-export default PaymentTermSettings;
+export default UnitMeasureSettings;

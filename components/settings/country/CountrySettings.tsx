@@ -8,33 +8,33 @@ import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { paymentTermAPI } from "@/components/api/paymentTermApi";
+import { countryAPI } from "@/components/api/countryApi";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 
-type PaymentTermType = {
+type CountryType = {
     id: number;
     name: string;
     dbId?: number;
 };
 
 type Props = {
-    paymentTermListData?: PaymentTermType[];
+    countryListData?: CountryType[];
 };
 
-const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
+const CountrySettings = ({ countryListData = [] }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingItem, setEditingItem] = useState<PaymentTermType | null>(null);
+    const [editingItem, setEditingItem] = useState<CountryType | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const paymentTerm = React.useMemo(() => paymentTermListData || [], [paymentTermListData]);
+    const country = React.useMemo(() => countryListData || [], [countryListData]);
 
-    const columns: DataTableColumn<PaymentTermType>[] = [
+    const columns: DataTableColumn<CountryType>[] = [
         { field: "id", headerName: "ID", width: 100 },
-        { field: "name", headerName: "Payment Term", flex: 1 },
+        { field: "name", headerName: "Country Name", flex: 1 },
     ];
 
-    const handleEdit = (row: PaymentTermType) => {
+    const handleEdit = (row: CountryType) => {
         setEditingItem(row);
         setIsModalOpen(true);
     };
@@ -44,21 +44,21 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (row: PaymentTermType) => {
-        const payload = { id: row.dbId };
-        await showToastMessage.promise(paymentTermAPI(payload, "DELETE"), {
-            loading: "Deleting Payment Term...",
-            success: (res: any) => res?.data?.message || "Payment Term Deleted successfully",
-            error: (err: any) => err?.data?.message || "Payment Term Failed to delete",
+    const handleDelete = async (row: CountryType) => {
+        const payload = { id: row?.dbId };
+        await showToastMessage.promise(countryAPI(payload, "DELETE"), {
+            loading: "Deleting country...",
+            success: (res: any) => res?.data?.message || "Deleted successfully",
+            error: (err: any) => err?.data?.message || "Failed to delete",
         });
     };
 
-    const paymentTermSchema = z.object({
+    const countrySchema = z.object({
         id: z.number().optional(),
         name: z
             .string()
-            .min(1, "PaymentTerm name is required")
-            .min(3, "PaymentTerm name must be at least 3 characters")
+            .min(1, "Country name is required")
+            .min(3, "Country name must be at least 3 characters")
             .default(""),
     });
 
@@ -66,17 +66,17 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
         try {
             setIsSaving(true);
 
-            const payload = paymentTermSchema.parse(data);
+            const payload = countrySchema.parse(data);
 
             const request = editingItem
-                ? paymentTermAPI({ ...payload, id: editingItem?.dbId }, "PUT")
-                : paymentTermAPI(payload, "POST");
+                ? countryAPI({ ...payload, id: editingItem?.dbId }, "PUT")
+                : countryAPI(payload, "POST");
 
             await showToastMessage.promise(request, {
-                loading: editingItem ? "Updating paymentTerm..." : "Adding paymentTerm...",
+                loading: editingItem ? "Updating country..." : "Adding country...",
                 success: (res: any) =>
-                    res?.data?.message || "PaymentTerm Added Successfully!",
-                error: (err: any) => err?.data?.message || "Failed To Add PaymentTerm",
+                    res?.data?.message || "Country Added Successfully!",
+                error: (err: any) => err?.data?.message || "Failed To Add Country",
             });
 
             setIsModalOpen(false);
@@ -84,12 +84,12 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
             setIsSaving(false);
         } catch (err) {
             if (err instanceof z.ZodError) {
-                showToastMessage.error(err?.issues[0]?.message);
+                showToastMessage.error(err.issues[0].message);
             }
         }
     };
 
-    const rowActions = (row: PaymentTermType) => (
+    const rowActions = (row: CountryType) => (
         <RowActions
             row={row}
             actions={["edit", "delete"]}
@@ -101,26 +101,26 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">PaymentTerm</h2>
+                <h2 className="text-xl font-semibold">Country</h2>
                 <CustomButton
                     onClick={handleAdd}
                     icon={<Plus strokeWidth={2.2} className="mr-2" />}
                     className="cursor-pointer"
-                    children={"Add PaymentTerm"}
+                    children={"Add Country"}
                 />
             </div>
 
-            {paymentTerm?.length === 0 ? (
+            {country?.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">
-                    No paymentTerm found. Click "Add PaymentTerm" to create one.
+                    No country found. Click "Add Country" to create one.
                 </div>
             ) : (
                 <DataTable
-                    data={paymentTerm}
+                    data={country}
                     columns={columns}
                     rowActions={rowActions}
                     rowActionsColumnLabel="Actions"
-                    searchPlaceholder="Search paymentTerm..."
+                    searchPlaceholder="Search country..."
                     searchable={true}
                     pagination={false}
                     showCheckboxSelection={false}
@@ -143,16 +143,16 @@ const PaymentTermSettings = ({ paymentTermListData = [] }: Props) => {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     onSave={handleSave}
-                    title={editingItem ? `Edit PaymentTerm` : `Add PaymentTerm`}
+                    title={editingItem ? `Edit Country` : `Add Country`}
                     defaultValues={editingItem || { name: "" }}
-                    schema={paymentTermSchema}
+                    schema={countrySchema}
                     isSaving={isSaving}
                 >
-                    <FormField name="name" label="PaymentTerm Name" placeholder="PaymentTerm Name" />
+                    <FormField name="name" label="Country Name" placeholder="Country Name" />
                 </CrudFormModal>
             )}
         </div>
     );
 };
 
-export default PaymentTermSettings;
+export default CountrySettings;

@@ -33,7 +33,6 @@ export const unitMeasureAPI = async (payload?: UnitMeasureDto, method?: string) 
       ...(isGet ? {} : { body: JSON.stringify(payload ?? {}) }),
       cache: 'no-store',
     });
-
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error?.message || 'Unit Measure API failed');
@@ -41,7 +40,7 @@ export const unitMeasureAPI = async (payload?: UnitMeasureDto, method?: string) 
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/unit-measures');
+    if (!isGet) revalidatePath('/settings/unit-measures');
 
     return { status: 200, data };
   } catch (error: any) {
