@@ -193,3 +193,8 @@
   font-family: var(--font-inter) !important;
 
 }
+
+.ag-theme-alpine .ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within{
+    border-width: 0px !important;
+    border-color: #fff !important;
+}

@@ -9,6 +9,7 @@ import { PriorityBadge } from "@/components/ui/custom/PriorityBadge"
 import { StatusBadge } from "@/components/ui/custom/StatusBadge"
 import { RowActions } from "@/components/ui/custom/RowActions"
 import HistoryDrawer from "@/components/common/HistoryDrawer"
+import Flyout from "@/components/common/Flyout"
 
 interface PurchaseRequisition {
   requisitionId: string
@@ -27,6 +28,7 @@ interface PurchaseRequisitionTableProps {
 export default function PurchaseRequisitionTable({ 
   data 
 }: PurchaseRequisitionTableProps) {
+
   const [selectedRow, setSelectedRow] = useState<PurchaseRequisition | null>(null)
   const [isHistoryOpen, setIsHistoryOpen] = useState(false)
   const tableData: PurchaseRequisition[] = data.length > 0 ? data : [
@@ -192,11 +194,12 @@ export default function PurchaseRequisitionTable({
       ]}
     />
       {isHistoryOpen && (
-        <HistoryDrawer
+        <Flyout
           open={isHistoryOpen}
           onOpenChange={setIsHistoryOpen}
           title={`History - ${selectedRow?.requisitionId}`}
-          history={sampleHistory}
+          children={<HistoryDrawer history={sampleHistory}/>}
+          closeLabel='Close History'
         />
       )}
     </>

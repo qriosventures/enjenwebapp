@@ -123,6 +123,7 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
           searchPlaceholder="Search brands..."
           searchable={true}
           pagination={false}
+          resizable={false}
           showCheckboxSelection={false}
           gridOptions={{
             getRowStyle: () => ({ marginTop: "4px", borderBottom: "none" }),

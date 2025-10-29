@@ -44,4 +44,7 @@ export const supplierSchema = z.object({
   isoCertified: z.boolean(),
 
   numberOfEmployees: z.string().min(1, "Select number of employees"),
+
+   // Documents
+  documents: z.array(z.any()).optional(),
 });

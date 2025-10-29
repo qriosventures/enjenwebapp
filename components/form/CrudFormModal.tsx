@@ -39,6 +39,12 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
     defaultValues,
   });
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    methods.handleSubmit(onSave)();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
@@ -47,7 +53,7 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
         </DialogHeader>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSave)}>
+          <form onSubmit={handleSubmit}>
             {children}
             <div className="mt-4 flex justify-end gap-2">
               <Button type="button" variant="outline" className="cursor-pointer font-semibold hover:bg-red-600 hover:text-white rounded-[5px]" onClick={onClose}>
@@ -57,6 +63,7 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
                 type="submit"
                 disabled={isSaving}
                 className="flex items-center gap-2 cursor-pointer rounded-[5px]"
+                onClick={(e) => e.stopPropagation()}
               >
                 {isSaving && (
                   <span className="w-4 h-4 border-2 font-semibold border-white border-t-transparent rounded-full animate-spin"></span>

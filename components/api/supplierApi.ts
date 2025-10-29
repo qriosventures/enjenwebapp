@@ -41,7 +41,7 @@ export const supplierAPI = async (payload?: SupplierDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/suppliers');
+    if (!isGet) revalidatePath('/procurement/supplier-registration-onboarding');
 
     return { status: 200, data };
   } catch (error: any) {

@@ -2,8 +2,9 @@
 import React from "react"
 import { Badge } from "@/components/ui/badge"
 
-interface StatusBadgeProps {
-  status: "Pending" | "Approved" | "Hold" | "Approving" | "Rejected" 
+export interface StatusBadgeProps {
+  status: "Pending" | "Approved" | "Hold" | "Approving" | "Rejected"
+  className?:any 
 }
 
 export const statusConfig = {
@@ -22,15 +23,15 @@ export const statusFillConfig = {
           Rejected: "bg-[#FF6868] text-white !font-[600] hover:bg-red-600 border-[#FF6868]",
 }
         
-export const StatusBadge = ({ status }:StatusBadgeProps) => {
+export const StatusBadge = ({ status,className }:StatusBadgeProps) => {
   const variant = "secondary"
-  const colorClass = `${statusConfig[status]} badge-flat w-20 text-sm bg-[#fff]`
+  const colorClass = `${className ? className : statusConfig[status]} badge-flat w-20 text-sm bg-[#fff]`
     return <Badge variant={variant} className={colorClass}>{status}</Badge>
 }
 
-export const StatusBadgeFill = ({status}:StatusBadgeProps) => { 
+export const StatusBadgeFill = ({status,className}:StatusBadgeProps) => { 
   const variant = status === "Rejected" ? "destructive" : "secondary"
-  const colorClass = `${statusFillConfig[status]} badge-flat w-20 text-sm`
+  const colorClass = `${className ? className : statusFillConfig[status]} badge-flat w-20 text-sm`
     return <Badge variant={variant} className={colorClass}>{status}</Badge>
 }
 

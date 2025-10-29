@@ -57,11 +57,6 @@ export const settingsItems: SettingsItem[] = [
         icon: <Map className="w-4 h-4 mr-3 text-green-500" />,
       },
       {
-        href: "/settings/language",
-        label: "Language",
-        icon: <Languages className="w-4 h-4 mr-3 text-purple-600" />,
-      },
-      {
         href: "/settings/currency",
         label: "Currency",
         icon: <DollarSign className="w-4 h-4 mr-3 text-orange-600" />,

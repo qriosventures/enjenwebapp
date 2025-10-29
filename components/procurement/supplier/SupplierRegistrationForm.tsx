@@ -1,9 +1,8 @@
-// components/supplier/SupplierRegistrationForm.tsx
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { FormField} from "@/components/form";
+import { FormField } from "@/components/form";
 import {
   FormControl,
   FormField as ShadcnFormField,
@@ -21,6 +20,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import CustomButton from "@/components/ui/custom/CustomButton";
+import { FormDocumentUpload } from "@/components/ui/custom/DocumentUpload";
 
 export function ContactBusinessInfoStep() {
   const { control } = useFormContext();
@@ -35,7 +35,7 @@ export function ContactBusinessInfoStep() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between gap-5">
+      <div className="flex items-center justify-between gap-10">
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-1">Contact Information</h3>
           <p className="text-sm text-gray-500 mb-6">
@@ -47,7 +47,6 @@ export function ContactBusinessInfoStep() {
               name="companyName"
               label="Company Name"
               placeholder="JSW Limited"
-              
             />
             <FormField
               name="primaryContactName"
@@ -69,7 +68,7 @@ export function ContactBusinessInfoStep() {
               name="phoneNumber"
               label="Phone"
               type="tel"
-              placeholder="+91 9112345678890"
+              placeholder="9112345678890"
             />
           </div>
         </div>
@@ -84,42 +83,53 @@ export function ContactBusinessInfoStep() {
             <ShadcnFormField
               control={control}
               name="yearEstablished"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Year Established</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd-MM-yyyy")
-                          ) : (
-                            <span>20-01-1990</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const [open, setOpen] = useState(false);
+
+                return (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Year Established</FormLabel>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            onClick={() => setOpen(!open)}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "dd-MM-yyyy")
+                            ) : (
+                              <span>20-01-1990</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={(date) => {
+                            field.onChange(date);
+                            setOpen(false); 
+                          }}
+                          captionLayout="dropdown" 
+                          fromYear={1900}
+                          toYear={new Date().getFullYear()}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
@@ -135,7 +145,6 @@ export function ContactBusinessInfoStep() {
               placeholder="TTUY18768987997"
             />
 
-            {/* ISO Certified - Toggle Buttons */}
             <ShadcnFormField
               control={control}
               name="isoCertified"
@@ -174,7 +183,6 @@ export function ContactBusinessInfoStep() {
               )}
             />
 
-            {/* Number of Employees - Button Group */}
             <ShadcnFormField
               control={control}
               name="numberOfEmployees"
@@ -188,7 +196,9 @@ export function ContactBusinessInfoStep() {
                           key={range.value}
                           type="button"
                           variant={
-                            field.value === range.value ? "default" : "outline"
+                            field.value === range.value
+                              ? "default"
+                              : "outline"
                           }
                           className={cn(
                             "flex-1",
@@ -214,20 +224,13 @@ export function ContactBusinessInfoStep() {
 
 export function DocumentsStep() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-1">Documents</h3>
-        <p className="text-sm text-gray-500 mb-6">
-          Please upload required documents
-        </p>
-        <div className="border-2 border-dashed rounded-lg p-12 text-center">
-          <p className="text-gray-500">
-            Document upload functionality coming soon
-          </p>
-        </div>
-      </div>
-    </div>
+    <FormDocumentUpload
+      name="documents"
+      title="Upload Documents"
+      description="Upload relevant files - supported .PDF .JPG - upto 5mb max"
+      maxSize={5}
+      acceptedTypes={[".pdf", ".jpg", ".jpeg", ".png"]}
+      maxFiles={10}
+    />
   );
 }
-
-
