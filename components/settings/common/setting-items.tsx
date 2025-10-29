@@ -1,8 +1,6 @@
 import React, { JSX } from "react";
 import {
   Globe,
-  Languages,
-  DollarSign,
   User,
   Users,
   ListChecks,
@@ -30,6 +28,13 @@ import {
   Building,
   ShoppingCart,
   FileText,
+  Truck,
+  ShieldAlert,
+  Boxes,
+  UserLock,
+  IdCard,
+  Trash2,
+  Car,
 } from "lucide-react";
 
 export interface SettingsItem {
@@ -52,24 +57,59 @@ export const settingsItems: SettingsItem[] = [
         icon: <Globe className="w-4 h-4 mr-3 text-green-600" />,
       },
       {
-        href: "/settings/state",
-        label: "State",
-        icon: <Map className="w-4 h-4 mr-3 text-green-500" />,
+        href: "/settings/states",
+        label: "States",
+        icon: <Map className="w-4 h-4 mr-3 text-orange-500" />,
       },
-      {
-        href: "/settings/currency",
-        label: "Currency",
-        icon: <DollarSign className="w-4 h-4 mr-3 text-orange-600" />,
-      },
-      {
-        href: "/settings/unit-measures",
-        label: "Units of Measurement",
-        icon: <Ruler className="w-4 h-4 mr-3 text-emerald-500" />,
+      {       
+        href: "/settings/cities",
+        label: "City",
+        icon: <MapPin className="w-4 h-4 mr-3 text-rose-500" />
       },
       {
         href: "/settings/brands",
         label: "Brands",
-        icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
+        icon: <BriefcaseBusiness className="w-4 h-4 mr-3 text-blue-600" />,
+      },
+      // {
+      //   href: "/settings/categories",
+      //   label: "Categories",
+      //   icon: <Folder className="w-4 h-4 mr-3 text-orange-500" />,
+      // },
+      {
+        href: "/settings/certification-types",
+        label: "Certification Types",
+        icon: <ListChecks className="w-4 h-4 mr-3 text-pink-600" />,
+      },
+      {
+        href: "/settings/carriers",
+        label: "Carriers",
+        icon: <Truck className="w-4 h-4 mr-3 text-blue-600" />,
+      },
+      {
+        href: "/settings/departments",
+        label: "Departments",
+        icon: <UserLock className="w-4 h-4 mr-3 text-green-600" />,
+      },
+      {
+        href: "/settings/designations",
+        label: "Designations",
+        icon: <IdCard className="w-4 h-4 mr-3 text-orange-500" />,
+      },
+      {
+        href: "/settings/defect-types",
+        label: "Defect Types",
+        icon: <ShieldAlert className="w-4 h-4 mr-3 text-red-600" />,
+      },
+      {
+        href: "/settings/document-types",
+        label: "Document Types",
+        icon: <ListChecks className="w-4 h-4 mr-3 text-pink-600" />,
+      },
+      {
+        href: "/settings/employees",
+        label: "Employees",
+        icon: <Users className="w-4 h-4 mr-3 text-blue-600" />,
       },
       {
         href: "/settings/item-types",
@@ -77,12 +117,35 @@ export const settingsItems: SettingsItem[] = [
         icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
       },
       {
+        href:"/settings/operations",
+        label:"Operations",
+        icon: <ClipboardList className="w-4 h-4 mr-3 text-pink-600" />
+      },
+      {
         href: "/settings/payment-terms",
         label: "Payment Terms",
-        icon: <Package className="w-4 h-4 mr-3 text-orange-500" />,
-      }
-
-
+        icon: <Wallet className="w-4 h-4 mr-3 text-green-500" />,
+      },
+      {
+        href: "/settings/scrap-reasons", 
+        label: "Scrap Reasons",
+         icon: <Trash2 className="w-4 h-4 mr-3 text-orange-500" />,
+      },
+      {
+        href: "/settings/unit-measures",
+        label: "Units of Measurement",
+        icon: <Ruler className="w-4 h-4 mr-3 text-emerald-500" />,
+      },
+      {
+        href: "/settings/vehicle-makes",
+        label: "Vehicle Makes",
+        icon: <Car className="w-4 h-4 mr-3 text-rose-500" />,
+      },
+      {
+        href: "/settings/warehouses",
+        label: "Warehouses",
+        icon: <Building2 className="w-4 h-4 mr-3 text-blue-500" />,
+      },
     ],
   },
   {
