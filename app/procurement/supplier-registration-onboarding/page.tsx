@@ -4,6 +4,8 @@ import PurchaseRequisitionTable from "@/components/procurement/purchase-requisit
 import { purchaseRequisitionAPI } from "@/components/api/purchaseRequisitionApi";
 import DynamicTabPage from "@/components/common/DynamicTabPage";
 import SupplierRegistrationOnBoardingPage from "@/components/procurement/supplier/SupplierRegistrationOnBoardingPage";
+import { supplierAPI } from "@/components/api/supplierApi";
+import SupplierApproval from "@/components/procurement/supplier/SupplierApproval";
 
 
 export default function SupplierPage() {
@@ -29,11 +31,9 @@ export default function SupplierPage() {
         {
           key: "Approvals",
           title: "Pending Approval List",
-          content: () => (
-            <div className="p-6 bg-white rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Approvals</h2>
-              <p className="text-gray-600">Approvals table goes here</p>
-            </div>
+          fetchData: supplierAPI,
+          content: (data) => (
+            <SupplierApproval supplierApprovalData={data}/>
           ),
         },
         {

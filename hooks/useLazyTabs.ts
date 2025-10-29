@@ -1,4 +1,3 @@
-// hooks/useLazyTabs.ts
 "use client";
 
 import { useTabContext } from "@/components/conetxt/TabContext";
@@ -7,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export interface TabDefinition {
   key: string;
-  fetchData?: () => Promise<any>;
+  fetchData?: () => Promise<any> | any;
   initialData?: any;
 }
 
@@ -19,21 +18,32 @@ export function useLazyTabs(tabDefs: TabDefinition[]) {
   const initialTabsState = Object.fromEntries(
     tabDefs.map((tab) => [
       tab.key,
-      { data: tab.initialData ?? null, loading: false, loaded: !!tab.initialData },
+      {
+        data: tab.initialData ?? null,
+        loading: false,
+        loaded: !!tab.initialData,
+      },
     ])
   );
 
   const [tabs, setTabs] = useState(initialTabsState);
 
   const fetchTabData = async (key: string, fetchFn?: () => Promise<any>) => {
-    if (!fetchFn) return;
-    setTabs((prev) => ({ ...prev, [key]: { ...prev[key], loading: true } }));
+    if (!fetchFn) return; 
+    setTabs((prev) => ({
+      ...prev,
+      [key]: { ...prev[key], loading: true },
+    }));
 
     try {
       const result = await fetchFn();
       setTabs((prev) => ({
         ...prev,
-        [key]: { data: result?.data || [], loading: false, loaded: true },
+        [key]: {
+          data: result?.data?.result || [],
+          loading: false,
+          loaded: true,
+        },
       }));
     } catch (err) {
       console.error(`Failed to load tab "${key}":`, err);
@@ -48,12 +58,8 @@ export function useLazyTabs(tabDefs: TabDefinition[]) {
 
   useEffect(() => {
     const active = tabDefs.find((t) => t.key === activeTab);
-    if (
-      active &&
-      activeTab !== undefined &&
-      !tabs[activeTab]?.loaded &&
-      !tabs[activeTab]?.loading
-    ) {
+
+    if (active && active.fetchData) {
       startTransition(() => fetchTabData(active.key, active.fetchData));
     }
   }, [activeTab]);

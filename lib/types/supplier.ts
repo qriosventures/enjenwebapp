@@ -6,11 +6,12 @@ export interface SupplierDto {
   primaryContactName: string;
   email: string;
   phone: string | null;
-  yearsInBusiness: number | null;
-  annualRevenue: number | null;
-  employeeCount: number | null;
+  yearsInBusiness: number | any;
+  annualRevenue: number | any;
+  employeeCount: number | any;
   status: number;
-  registrationDate: Date | null;
+  registrationDate: Date | any;
   lastEvaluationDate: Date | null;
   averageRating: number;
+  
 }

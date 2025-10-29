@@ -78,6 +78,7 @@ interface DataTableProps<TData = any> {
   height?: string | number
   
   onRowClick?: (row: TData) => void
+  resizable?:boolean
   
 }
 
@@ -101,6 +102,7 @@ export function DataTable<TData extends Record<string, any>>({
   // height = "600px",
   showCheckboxSelection=false,
   onRowClick,
+  resizable=false
 }: DataTableProps<TData>) {
   const gridRef = useRef<AgGridReact>(null)
   const [selectedRows, setSelectedRows] = useState<TData[]>([])
@@ -127,7 +129,7 @@ const columnDefs = useMemo<ColDef[]>(() => {
       ...col,
       filter: col.filter ?? true,
       sortable: col.sortable ?? true,
-      resizable: true,
+      resizable: false,
     })),
   ];
 
@@ -139,6 +141,7 @@ const columnDefs = useMemo<ColDef[]>(() => {
       cellRenderer: (params: any) => rowActions(params.data),
       sortable: false,
       filter: false,
+      resizable: resizable,
     });
   }
 
@@ -269,7 +272,6 @@ const columnDefs = useMemo<ColDef[]>(() => {
         </div>
       )}
 
-      {/* AG Grid Table */}
       <div
         className={`${cn(
           "ag-theme-alpine",

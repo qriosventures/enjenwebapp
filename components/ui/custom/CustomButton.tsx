@@ -11,6 +11,7 @@ interface CustomButtonProps {
   className?: string;
   variant?: "default" | "outline" | "destructive" | "secondary";
   disabled?: boolean;
+  type?: "submit" | "reset" | "button";
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -20,11 +21,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   className = "",
   variant = "default",
   disabled = false,
+  type
 }) => {
   return (
     <Button
       onClick={onClick}
       variant={variant}
+      type={type || "button"}
       className={`flex items-center justify-center gap-1 px-4 py-2 font-semibold rounded transition-colors duration-300 
                   bg-[#1E1F21] text-white border border-[#1E1F21] hover:bg-[#1E1F21] hover:text-[#98FF4F]
                   ${className}`}

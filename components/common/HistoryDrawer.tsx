@@ -1,13 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 
 interface HistoryItem {
   id: string | number;
@@ -16,36 +9,13 @@ interface HistoryItem {
 }
 
 interface HistoryDrawerProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   history: HistoryItem[];
-  title?: string;
 }
 
 const HistoryDrawer = ({
-  open,
-  onOpenChange,
-  history,
-  title = "Activity History",
+  history
 }: HistoryDrawerProps) => {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="right"
-        className="w-[400px] sm:w-[450px] bg-[#F5F6F1] p-6 overflow-y-auto border-l "
-      >
-        <SheetHeader className="flex items-center justify-between mb-6">
-          <SheetTitle className="text-lg font-semibold">{title}</SheetTitle>
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() => onOpenChange(false)}
-            className="cursor-pointer badge-flat"
-          >
-            Close History
-          </Button>
-        </SheetHeader>
-
         <div className="space-y-5 relative">
           <div className="absolute left-5 top-0 bottom-0 w-[1.5px] bg-gray-300" />
           {history?.map((item) => (
@@ -59,8 +29,6 @@ const HistoryDrawer = ({
             </div>
           ))}
         </div>
-      </SheetContent>
-    </Sheet>
   );
 };
 

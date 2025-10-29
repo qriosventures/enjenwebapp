@@ -10,15 +10,22 @@ type DynamicStepperFormProps = {
   steps: Step[];
   stepContent: React.ReactNode[];
   stepFields: string[][] | any; 
+  buttonText?:string
+  onFinalSubmit?: (data: any) => void;
+  isSubmitting?:boolean
 };
 
 const DynamicStepperForm = ({
   steps,
   stepContent,
   stepFields,
+  buttonText = 'submit',
+  onFinalSubmit,
+  isSubmitting
 }: DynamicStepperFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const { trigger } = useFormContext();
+ const { trigger, handleSubmit } = useFormContext();
+
 
   const goNext = async () => {
     if (currentStep < steps.length - 1) {
@@ -32,6 +39,12 @@ const DynamicStepperForm = ({
   const goBack = () => {
     if (currentStep > 0) setCurrentStep((prev) => prev - 1);
   };
+
+  const handleFinalSubmit = handleSubmit((data) => {
+    if (currentStep === steps?.length - 1 && onFinalSubmit) {
+      onFinalSubmit(data); 
+    }
+  });
 
   return (
     <div className="mx-auto space-y-6">
@@ -52,13 +65,23 @@ const DynamicStepperForm = ({
           >
             Back
           </button>
-          <button
-            type={currentStep === steps.length - 1 ? "submit" : "button"}
-            onClick={currentStep === steps.length - 1 ? undefined : goNext}
-            className="px-4 py-2 bg-black text-white rounded text-sm font-semibold disabled:opacity-50 cursor-pointer"
-          >
-            {currentStep === steps.length - 1 ? "Submit" : "Next"}
-          </button>
+          {currentStep === steps.length - 1 ? (
+            <button
+              type="button"
+              onClick={handleFinalSubmit}
+              className="px-4 py-2 bg-black text-white rounded text-sm font-semibold disabled:opacity-50 cursor-pointer"
+            >
+              { isSubmitting ? 'Submitting...' : buttonText}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={goNext}
+              className="px-4 py-2 bg-black text-white rounded text-sm font-semibold cursor-pointer"
+            >
+              Next
+            </button>
+          )}     
         </div>
       </div>
     </div>
