@@ -1,4 +1,4 @@
 export interface PaymentTermDto {
   id?: number;
-  name: string;
+  name?: string;
 }
