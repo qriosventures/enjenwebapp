@@ -10,55 +10,37 @@ import { z } from "zod";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { stateAPI } from "@/components/api/stateApi";
-import { useRouter } from "next/navigation";
-import { countryAPI } from "@/components/api/countryApi";
+
+type CountryType = { id: number; name: string };
 
 type StateType = {
   id?: number;
   name: string;
   code?: string;
   countryId?: number;
+  dbId?: number;
 };
 
 type Props = {
   stateListData?: StateType[];
+  countryListData?: CountryType[];
 };
 
-type CountryType = { id: number; name: string };
-
-const StatesSettings = ({ stateListData = [] }: Props) => {
-  const router = useRouter();
+const StatesSettings = ({
+  stateListData = [],
+  countryListData = [],
+}: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<StateType | null>(null);
+  const [editingItem, setEditingItem] = useState<StateType | any>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [states, setStates] = useState<StateType[]>(stateListData);
-  const [countries, setCountries] = useState<CountryType[]>([]);
-  const [loadingCountries, setLoadingCountries] = useState(false);
+  const [countries, setCountries] = useState<CountryType[]>(countryListData);
 
   useEffect(() => {
-    setStates(stateListData);
-  }, [stateListData]);
+     setStates(stateListData);
+     setCountries(countryListData);
+  }, [stateListData,countryListData]);
 
-  useEffect(() => {
-    if (isModalOpen) {
-      fetchCountries();
-    }
-  }, [isModalOpen]);
-
-  const fetchCountries = async () => {
-    try {
-      setLoadingCountries(true);
-      const response = await countryAPI();
-      if (response?.data?.result) {
-        setCountries(response.data.result);
-      }
-    } catch (error) {
-      console.error("Error fetching countries:", error);
-      showToastMessage.error("Failed to load countries");
-    } finally {
-      setLoadingCountries(false);
-    }
-  };
 
   const columns: DataTableColumn<StateType>[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -77,15 +59,14 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
 
   const handleDelete = async (row: StateType) => {
     try {
-      const payload = { id: row?.id } as any;
-
-      await showToastMessage.promise(stateAPI(payload, "DELETE"), {
-        loading: "Deleting state...",
-        success: (res: any) => res?.data?.message || "Deleted successfully",
-        error: (err: any) => err?.data?.message || "Failed to delete",
-      });
-
-      router.refresh();
+      await showToastMessage.promise(
+        stateAPI({ id: row?.dbId } as any, "DELETE"),
+        {
+          loading: "Deleting state...",
+          success: (res: any) => res?.data?.message || "Deleted successfully",
+          error: (err: any) => err?.data?.message || "Failed to delete",
+        }
+      );
     } catch (error) {
       console.error("Delete error:", error);
     }
@@ -97,8 +78,8 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
       .string()
       .min(1, "State name is required")
       .min(3, "State name must be at least 3 characters"),
-    code: z.string().optional(),
-    countryId: z.coerce.number().min(1, "Country is required").optional(),
+    code: z.number().optional(),
+    countryId: z.coerce.number().min(1, "Country is required"),
   });
 
   const handleSave = async (data: any) => {
@@ -108,7 +89,7 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
       const payload = stateSchema.parse(data);
 
       const request = editingItem
-        ? stateAPI({ ...payload, id: editingItem?.id } as any, "PUT")
+        ? stateAPI({ ...payload, id: editingItem?.dbId } as any, "PUT")
         : stateAPI(payload as any, "POST");
 
       await showToastMessage.promise(request, {
@@ -120,7 +101,6 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
 
       setIsModalOpen(false);
       setEditingItem(null);
-      router.refresh();
     } catch (err) {
       if (err instanceof z.ZodError) {
         showToastMessage.error(err.issues[0].message);
@@ -155,7 +135,7 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
         </CustomButton>
       </div>
 
-      {states?.length === 0 ? (
+      {states.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
           No states found. Click "Add State" to create one.
         </div>
@@ -166,7 +146,7 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
           rowActions={rowActions}
           rowActionsColumnLabel="Actions"
           searchPlaceholder="Search states..."
-          searchable={true}
+          searchable
           pagination={false}
           showCheckboxSelection={false}
           gridOptions={{
@@ -190,10 +170,19 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
           onSave={handleSave}
           title={editingItem ? "Edit State" : "Add State"}
           defaultValues={
-            editingItem || {
-              name: "",
-              countryId: countries?.[0]?.id ?? undefined,
-            }
+            editingItem
+              ? {
+                  id: editingItem?.dbId,
+                  name: editingItem?.name,
+                  countryId: Number(editingItem?.countryId),
+                  code: Number(editingItem?.code),
+                }
+              : {
+                  id: 0,
+                  name: "",
+                  countryId: 0,
+                  code: 0,
+                }
           }
           schema={stateSchema}
           isSaving={isSaving}
@@ -201,14 +190,13 @@ const StatesSettings = ({ stateListData = [] }: Props) => {
           <FormSelect
             name="countryId"
             label="Country"
-            options={countries.map((c: CountryType) => ({
+            options={countries.map((c) => ({
               label: c.name,
               value: String(c.id),
             }))}
-            placeholder="Select a country"
-            disabled={loadingCountries}
+            disabled={countries.length === 0}
+            className="!w-full mb-2"
           />
-
           <FormField
             name="name"
             label="State Name"
