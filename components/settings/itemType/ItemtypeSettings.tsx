@@ -8,33 +8,33 @@ import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { brandsAPI } from "@/components/api/brands";
+import { itemTypeAPI } from "@/components/api/itemTypeApi";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 
-type BrandsType = {
+type ItemTypeType = {
   id: number;
   name: string;
   dbId?: number;
 };
 
 type Props = {
-  brandsListData?: BrandsType[];
+  itemTypeListData?: ItemTypeType[];
 };
 
-const BrandSettings = ({ brandsListData = [] }: Props) => {
+const ItemTypeSettings = ({ itemTypeListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<BrandsType | null>(null);
+  const [editingItem, setEditingItem] = useState<ItemTypeType | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const brands = React.useMemo(() => brandsListData || [], [brandsListData]);
+  const itemType = React.useMemo(() => itemTypeListData || [], [itemTypeListData]);
 
-  const columns: DataTableColumn<BrandsType>[] = [
+  const columns: DataTableColumn<ItemTypeType>[] = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Brand Name", flex: 1 },
+    { field: "name", headerName: "ItemType Name", flex: 1 },
   ];
 
-  const handleEdit = (row: BrandsType) => {
+  const handleEdit = (row: ItemTypeType) => {
     setEditingItem(row);
     setIsModalOpen(true);
   };
@@ -44,21 +44,21 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (row: BrandsType) => {
+  const handleDelete = async (row: ItemTypeType) => {
     const payload = { id: row.dbId };
-    await showToastMessage.promise(brandsAPI(payload, "DELETE"), {
-      loading: "Deleting brand...",
+    await showToastMessage.promise(itemTypeAPI(payload, "DELETE"), {
+      loading: "Deleting itemType...",
       success: (res: any) => res?.data?.message || "Deleted successfully",
       error: (err: any) => err?.data?.message || "Failed to delete",
     });
   };
 
-  const brandSchema = z.object({
+  const itemTypeSchema = z.object({
     id: z.number().optional(),
     name: z
       .string()
-      .min(1, "Brand name is required")
-      .min(3, "Brand name must be at least 3 characters")
+      .min(1, "ItemType name is required")
+      .min(3, "ItemType name must be at least 3 characters")
       .default(""),
   });
 
@@ -66,17 +66,17 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     try {
       setIsSaving(true);
 
-      const payload = brandSchema.parse(data);
+      const payload = itemTypeSchema.parse(data);
 
       const request = editingItem
-        ? brandsAPI({ ...payload, id: editingItem.dbId }, "PUT")
-        : brandsAPI(payload, "POST");
+        ? itemTypeAPI({ ...payload, id: editingItem.dbId }, "PUT")
+        : itemTypeAPI(payload, "POST");
 
       await showToastMessage.promise(request, {
-        loading: editingItem ? "Updating brand..." : "Adding brand...",
+        loading: editingItem ? "Updating itemType..." : "Adding itemType...",
         success: (res: any) =>
-          res?.data?.message || "Brand Added Successfully!",
-        error: (err: any) => err?.data?.message || "Failed To Add Brand",
+          res?.data?.message || "ItemType Added Successfully!",
+        error: (err: any) => err?.data?.message || "Failed To Add ItemType",
       });
 
       setIsModalOpen(false);
@@ -89,7 +89,7 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
     }
   };
 
-  const rowActions = (row: BrandsType) => (
+  const rowActions = (row: ItemTypeType) => (
     <RowActions
       row={row}
       actions={["edit", "delete"]}
@@ -101,29 +101,28 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Brands</h2>
+        <h2 className="text-xl font-semibold">ItemType</h2>
         <CustomButton
           onClick={handleAdd}
-          icon={<Plus strokeWidth={2.2} className="mr-2"/>}
+          icon={<Plus strokeWidth={2.2} className="mr-2" />}
           className="cursor-pointer"
-          children={"Add Brand"}
+          children={"Add ItemType"}
         />
       </div>
 
-      {brands.length === 0 ? (
+      {itemType.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          No brands found. Click "Add Brand" to create one.
+          No itemType found. Click "Add ItemType" to create one.
         </div>
       ) : (
         <DataTable
-          data={brands}
+          data={itemType}
           columns={columns}
           rowActions={rowActions}
           rowActionsColumnLabel="Actions"
-          searchPlaceholder="Search brands..."
+          searchPlaceholder="Search itemType..."
           searchable={true}
           pagination={false}
-          resizable={false}
           showCheckboxSelection={false}
           gridOptions={{
             getRowStyle: () => ({ marginTop: "4px", borderBottom: "none" }),
@@ -146,14 +145,14 @@ const BrandSettings = ({ brandsListData = [] }: Props) => {
           onSave={handleSave}
           title={editingItem ? `Edit Brand` : `Add Brand`}
           defaultValues={editingItem || { name: "" }}
-          schema={brandSchema}
+          schema={itemTypeSchema}
           isSaving={isSaving}
         >
-          <FormField name="name" label="Brand Name" placeholder="Brand Name" />
+          <FormField name="name" label="ItemType Name" placeholder="ItemType Name" />
         </CrudFormModal>
       )}
     </div>
   );
 };
 
-export default BrandSettings;
+export default ItemTypeSettings;
