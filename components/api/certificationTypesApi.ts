@@ -41,7 +41,7 @@ export const certificationTypesAPI = async (payload?: CertificationTypesDto, met
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath("/certification-types");
+    if (!isGet) revalidatePath("/settings/certification-types");
 
     return { status: 200, data };
   } catch (error: any) {

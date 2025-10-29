@@ -41,7 +41,7 @@ export const defectTypeAPI = async (payload?: DefectTypeDto, method?: string) =>
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath("/defects/types");
+    if (!isGet) revalidatePath("/settings/defect-types");
 
     return { status: 200, data };
   } catch (error: any) {

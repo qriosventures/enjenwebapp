@@ -41,7 +41,7 @@ export const departmentAPI = async (payload?: DepartmentDto, method?: string) =>
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath("/departments");
+    if (!isGet) revalidatePath("/settings/departments");
 
     return { status: 200, data };
   } catch (error: any) {
