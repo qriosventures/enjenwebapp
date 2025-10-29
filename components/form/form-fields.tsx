@@ -139,6 +139,7 @@ interface FormSelectProps {
   description?: string
   disabled?: boolean
   options: { label: string; value: string }[]
+  className?: string
 }
 
 export function FormSelect({
@@ -148,6 +149,7 @@ export function FormSelect({
   description,
   disabled,
   options,
+  className,
 }: FormSelectProps) {
   const { control } = useFormContext()
 
@@ -155,16 +157,18 @@ export function FormSelect({
     <ShadcnFormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field }) => {
+         const selectedValue = field.value ? String(field.value) : "";
+        return (
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <Select
             onValueChange={field.onChange}
-            defaultValue={field.value}
+            defaultValue={selectedValue ?? field.value}
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className={className ? className : '' }>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
@@ -179,7 +183,8 @@ export function FormSelect({
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
-      )}
+        )
+      }}
     />
   )
 }
