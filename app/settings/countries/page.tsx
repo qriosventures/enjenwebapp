@@ -8,6 +8,7 @@ const CountryPage = async () => {
     return (
         <>
             <CountrySettings countryListData={country} />
+
         </>
     );
 };
