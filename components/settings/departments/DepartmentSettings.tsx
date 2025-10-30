@@ -13,6 +13,7 @@ import CustomButton from "@/components/ui/custom/CustomButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Controller } from "react-hook-form";
+import CustomIsActiveBadge from "@/components/ui/custom/CustomIsActiveBadge";
 
 type DepartmentType = {
   id: number;
@@ -43,13 +44,7 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
       headerName: "Active",
       width: 150,
       cellRenderer: (params) => (
-        <span
-          className={`px-2 py-1 text-xs font-medium ${
-            params.value ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
-        >
-          {params.value ? "Active" : "Inactive"}
-        </span>
+        <CustomIsActiveBadge params={params?.value} />
       ),
     },
   ];

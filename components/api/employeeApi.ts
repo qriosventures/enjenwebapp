@@ -41,7 +41,7 @@ export const employeeAPI = async (payload?: EmployeeDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/employees');
+    if (!isGet) revalidatePath('/settings/employees');
 
     return { status: 200, data };
   } catch (error: any) {

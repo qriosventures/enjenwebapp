@@ -98,6 +98,7 @@ interface FormCheckboxProps {
   label: string
   description?: string
   disabled?: boolean
+  className?: string
 }
 
 export function FormCheckbox({
@@ -105,6 +106,7 @@ export function FormCheckbox({
   label,
   description,
   disabled,
+  className
 }: FormCheckboxProps) {
   const { control } = useFormContext()
 
@@ -113,7 +115,7 @@ export function FormCheckbox({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+        <FormItem className={`flex flex-row items-start space-x-3 space-y-0 ${className}`}>
           <FormControl>
             <Checkbox
               checked={field.value}

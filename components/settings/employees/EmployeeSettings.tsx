@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table"
 import { RowActions } from "@/components/ui/custom/RowActions"
 import { Plus } from "lucide-react"
@@ -11,6 +11,7 @@ import { employeeAPI } from "@/components/api/employeeApi"
 import { showToastMessage } from "@/components/common/ToastMessage"
 import CustomButton from "@/components/ui/custom/CustomButton"
 import { format } from "date-fns"
+import CustomIsActiveBadge from "@/components/ui/custom/CustomIsActiveBadge"
 
 type EmployeeType = {
   id: number
@@ -18,7 +19,7 @@ type EmployeeType = {
   name: string
   departmentId: number
   designationId: number
-  hireDate: Date | string
+  hireDate:string
   isActive: boolean
   skills?: string
   profileImageUrl?: string
@@ -50,8 +51,7 @@ const EmployeeSettings = ({ employeeListData }: Props) => {
 
   const { departments, designations, employee } = employeeListData
 
-  const employees = React.useMemo(() => employee || [], [employee])
-
+  const employees = React.useMemo(() => employee || [] , [employee])
   const getDepartmentName = (departmentId: number) => {
     const dept = departments.find((d) => d.id === departmentId)
     return dept?.name || "N/A"
@@ -73,41 +73,29 @@ const EmployeeSettings = ({ employeeListData }: Props) => {
 
   const columns: DataTableColumn<EmployeeType>[] = [
     { field: "id", headerName: "ID", width: 80 },
-    { field: "employeeId", headerName: "Employee ID", width: 120 },
+    { field: "employeeId", headerName: "Employee ID"},
     { field: "name", headerName: "Name", flex: 1 },
     {
       field: "departmentId",
       headerName: "Department",
-      width: 150,
       valueFormatter: (params: any) => getDepartmentName(params.value),
     },
     {
       field: "designationId",
       headerName: "Designation",
-      width: 150,
       valueFormatter: (params: any) => getDesignationName(params.value),
     },
     {
       field: "hireDate",
       headerName: "Hire Date",
-      width: 120,
       valueFormatter: (params: any) => formatDate(params.value),
     },
     {
       field: "isActive",
       headerName: "Status",
-      width: 100,
       cellRenderer: (params: any) => (
-        <span
-          className={`px-2 py-1 rounded text-xs ${
-            params.value
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {params.value ? "Active" : "Inactive"}
-        </span>
-      ),
+        <CustomIsActiveBadge params={params?.value} />
+      )
     },
   ]
 
@@ -137,8 +125,8 @@ const EmployeeSettings = ({ employeeListData }: Props) => {
       .string()
       .min(1, "Name is required")
       .min(3, "Name must be at least 3 characters"),
-    departmentId: z.number().min(1, "Department is required"),
-    designationId: z.number().min(1, "Designation is required"),
+    departmentId: z.coerce.number().min(1, "Department is required"),
+    designationId: z.coerce.number().min(1, "Designation is required"),
     hireDate: z.string().min(1, "Hire date is required"),
     isActive: z.boolean().default(true),
     skills: z.string().optional(),
@@ -188,16 +176,13 @@ const EmployeeSettings = ({ employeeListData }: Props) => {
 
   const departmentOptions = departments.map((dept) => ({
     label: dept.name,
-    value: Number(dept.id),
+    value: String(dept.id),
   }))
 
   const designationOptions = designations.map((desig) => ({
     label: desig.name,
-    value: Number(desig.id),
+    value: String(desig.id),
   }))
-
-  console.log(departmentOptions, designationOptions,"departmentOptions, designationOptions")
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
