@@ -11,7 +11,6 @@ import {
   header,
 } from "@/lib/utils/endpoint";
 import { CountryDto } from "@/lib/types/country";
-
 export const countryAPI = async (payload?: CountryDto, method?: string) => {
   try {
     const normalizedMethod = (method ?? "GET").toUpperCase();
@@ -39,7 +38,7 @@ export const countryAPI = async (payload?: CountryDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath("/settings/country");
+    if (!isGet) revalidatePath("/settings/countries");
 
     return { status: 200, data };
   } catch (error: any) {
