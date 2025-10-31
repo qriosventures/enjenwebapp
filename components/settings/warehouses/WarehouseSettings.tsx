@@ -12,6 +12,7 @@ import { showToastMessage } from "@/components/common/ToastMessage"
 import CustomButton from "@/components/ui/custom/CustomButton"
 import CustomIsActiveBadge from "@/components/ui/custom/CustomIsActiveBadge"
 import { format } from "date-fns"
+import { validateRequiredData } from "@/lib/utils/crudValidationUtils"
 
 type WarehouseType = {
   id: number
@@ -125,10 +126,22 @@ const WarehouseSettings = ({ warehouseListData }: Props) => {
     setIsModalOpen(true)
   }
 
-  const handleAdd = () => {
-    setEditingItem(null)
-    setIsModalOpen(true)
-  }
+const handleAdd = () => {
+ const isValid = validateRequiredData(
+    {
+      country,
+      state,
+      city,
+    },
+    "warehouse"
+  )
+
+  if(!isValid) return
+
+  setEditingItem(null)
+  setIsModalOpen(true)
+}
+
 
   const handleDelete = async (row: WarehouseType) => {
     const payload = { id: row?.dbId }
@@ -263,6 +276,7 @@ const WarehouseSettings = ({ warehouseListData }: Props) => {
           schema={warehouseSchema}
           isSaving={isSaving}
           className="!max-w-5xl !w-full"
+          disableSave={country.length === 0 || state.length === 0 || city.length === 0}
         >
           <div className="grid grid-cols-2 gap-4">
             <FormField name="code" label="Code" placeholder="WH001" />
@@ -271,21 +285,21 @@ const WarehouseSettings = ({ warehouseListData }: Props) => {
             <FormSelect
               name="countryId"
               label="Country"
-              placeholder="Select Country"
+               placeholder={country.length > 0 ? "Select Country" : "No countries available"}
               options={countryOptions}
               className="w-full"
             />
             <FormSelect
               name="stateId"
               label="State"
-              placeholder="Select State"
+              placeholder={state.length > 0  ? "Select State" : "No states available"}
               options={stateOptions}
               className="w-full"
             />
             <FormSelect
               name="cityId"
               label="City"
-              placeholder="Select City"
+              placeholder={city.length  > 0 ? "Select City" : "No cities available"}
               options={cityOptions}
               className="w-full"
             />

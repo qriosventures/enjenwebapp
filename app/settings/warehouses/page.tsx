@@ -15,7 +15,7 @@ const WarehousePage = async () => {
         warehouseAPI()    
     ])
     
-    const country = countryResponse?.status === 'fulfilled' ? countryResponse?.value?.data?.result || [] : [];
+    const country= countryResponse?.status === 'fulfilled' ? countryResponse?.value?.data?.result || [] : [];
     const state = stateResponse?.status === 'fulfilled' ? stateResponse?.value?.data?.result || [] : [];
     const city = cityResponse?.status === 'fulfilled' ? cityResponse?.value?.data?.result || [] : [];
     const warehouse = warehouseResponse?.status === 'fulfilled' ? warehouseResponse?.value?.data?.result || [] : [];
