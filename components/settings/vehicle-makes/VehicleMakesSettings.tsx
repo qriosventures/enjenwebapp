@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table";
 import { RowActions } from "@/components/ui/custom/RowActions";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
@@ -27,11 +26,11 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
   const [editingItem, setEditingItem] = useState<VehicleType | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const vehicle = React.useMemo(() => vehicleListData || [], [vehicleListData]);
+  const vehicle = React.useMemo(() => vehicleListData ?? [], [vehicleListData]);
 
   const columns: DataTableColumn<VehicleType>[] = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "vehicle Name", flex: 1 },
+    { field: "name", headerName: "Vehicle Make", flex: 1 },
   ];
 
   const handleEdit = (row: VehicleType) => {
@@ -47,7 +46,7 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
   const handleDelete = async (row: VehicleType) => {
     const payload = { id: row?.dbId };
     await showToastMessage.promise(vehicleMakeAPI(payload as any, "DELETE"), {
-      loading: "Deleting vehicle...",
+      loading: "Deleting vehicle make...",
       success: (res: any) => res?.data?.message || "Deleted successfully",
       error: (err: any) => err?.data?.message || "Failed to delete",
     });
@@ -57,9 +56,8 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
     id: z.number().optional(),
     name: z
       .string()
-      .min(1, "vehicle name is required")
-      .min(3, "vehicle name must be at least 3 characters")
-      .default(""),
+      .min(1, "Vehicle make name is required")
+      .min(3, "Name must be at least 3 characters"),
   });
 
   const handleSave = async (data: any) => {
@@ -69,22 +67,25 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
       const payload = vehicleSchema.parse(data);
 
       const request = editingItem
-        ? vehicleMakeAPI({ ...payload, id: editingItem?.dbId }, "PUT")
-        : vehicleMakeAPI(payload, "POST");
+        ? vehicleMakeAPI({ ...payload, id: editingItem?.dbId } as any, "PUT")
+        : vehicleMakeAPI(payload as any, "POST");
+
       await showToastMessage.promise(request, {
-        loading: editingItem ? "Updating Vehicle..." : "Adding Vehicle...",
-        success: (res: any) =>
-          res?.data?.message || "Vehicle Added Successfully!",
-        error: (err: any) => err?.data?.message || "Failed To Add Vehicle",
+        loading: editingItem ? "Updating..." : "Adding...",
+        success: (res: any) => res?.data?.message || "Saved successfully!",
+        error: (err: any) => err?.data?.message || "Save failed",
       });
 
       setIsModalOpen(false);
       setEditingItem(null);
-      setIsSaving(false);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        showToastMessage.error(err.issues[0].message);
+        showToastMessage.error(err.issues?.[0]?.message ?? "Validation error");
+      } else {
+        showToastMessage.error("An unexpected error occurred");
       }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -97,6 +98,10 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
     />
   );
 
+  const defaultValues = editingItem
+    ? { name: editingItem.name ?? "" }
+    : { name: "" };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -105,13 +110,14 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
           onClick={handleAdd}
           icon={<Plus strokeWidth={2.2} className="mr-2" />}
           className="cursor-pointer"
-          children={"Add Vehicle Make"}
-        />
+        >
+          Add Vehicle Make
+        </CustomButton>
       </div>
 
-      {vehicle?.length === 0 ? (
+      {vehicle.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          No vehicle-makes found. Click "Add vehicle-makes" to create one.
+          No vehicle makes found. Click "Add Vehicle Make" to create one.
         </div>
       ) : (
         <DataTable
@@ -119,8 +125,8 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
           columns={columns}
           rowActions={rowActions}
           rowActionsColumnLabel="Actions"
-          searchPlaceholder="Search vehicle..."
-          searchable={true}
+          searchPlaceholder="Search vehicle makes..."
+          searchable
           pagination={false}
           showCheckboxSelection={false}
           gridOptions={{
@@ -140,14 +146,21 @@ const VehicleMakesSettings = ({ vehicleListData = [] }: Props) => {
       {isModalOpen && (
         <CrudFormModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingItem(null);
+          }}
           onSave={handleSave}
-          title={editingItem ? `Edit Vehicle Make` : `Add Vehicle Make`}
-          defaultValues={editingItem || { name: "" }}
+          title={editingItem ? "Edit Vehicle Make" : "Add Vehicle Make"}
+          defaultValues={defaultValues}
           schema={vehicleSchema}
           isSaving={isSaving}
         >
-          <FormField name="name" label="Vehicle Make" placeholder=" Name" />
+          <FormField
+            name="name"
+            label="Vehicle Make"
+            placeholder="Enter vehicle make name"
+          />
         </CrudFormModal>
       )}
     </div>

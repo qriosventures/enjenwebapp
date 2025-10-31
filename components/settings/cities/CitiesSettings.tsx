@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table";
 import { RowActions } from "@/components/ui/custom/RowActions";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField, FormSelect } from "@/components/form";
@@ -11,8 +12,8 @@ import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { cityAPI } from "@/components/api/cityApi";
 
-type CountryType = { id: number; name: string };
 
+type CountryType = { id: number; name: string };
 type StateType = {
   id?: number;
   name: string;
@@ -20,7 +21,6 @@ type StateType = {
   countryId?: number;
   dbId?: number;
 };
-
 type CityType = {
   id?: number;
   name: string;
@@ -42,15 +42,11 @@ const CitiesSettings = ({ cityListData }: Props) => {
   const [editingItem, setEditingItem] = useState<CityType | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [cities, setCities] = useState<CityType[]>(cityListData.cities);
-  const [states, setStates] = useState<StateType[]>(cityListData.states);
-  const [countries, setCountries] = useState<CountryType[]>(
-    cityListData.countries
-  );
+  const { states, countries } = cityListData;
+
 
   useEffect(() => {
     setCities(cityListData.cities);
-    setStates(cityListData.states);
-    setCountries(cityListData.countries);
   }, [cityListData]);
 
   const columns: DataTableColumn<CityType>[] = [
@@ -80,8 +76,7 @@ const CitiesSettings = ({ cityListData }: Props) => {
       );
 
       const response = await cityAPI();
-      if (response.status === 200 && response.data?.result) {
-        setCities(response.data.result);
+      if (response?.status === 200 && response?.data?.result) {
       }
     } catch (error) {
       console.error("Delete error:", error);
@@ -102,9 +97,7 @@ const CitiesSettings = ({ cityListData }: Props) => {
   const handleSave = async (data: any) => {
     try {
       setIsSaving(true);
-
       const payload = citySchema.parse(data);
-
       const cityPayload = { ...payload };
 
       const request = editingItem
@@ -118,7 +111,7 @@ const CitiesSettings = ({ cityListData }: Props) => {
       });
 
       const response = await cityAPI();
-      if (response.status === 200 && response.data?.result) {
+      if (response?.status === 200 && response?.data?.result) {
         setCities(response.data.result);
       }
 
@@ -126,7 +119,7 @@ const CitiesSettings = ({ cityListData }: Props) => {
       setEditingItem(null);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        showToastMessage.error(err.issues[0].message);
+        showToastMessage.error(err.issues?.[0]?.message || "Validation error");
       } else {
         console.error(err);
         showToastMessage.error("Unexpected error occurred");
@@ -144,6 +137,23 @@ const CitiesSettings = ({ cityListData }: Props) => {
       onDelete={() => handleDelete(row)}
     />
   );
+
+  const defaultValues = useMemo(() => {
+    if (!editingItem) {
+      return { id: 0, name: "", countryId: 0, stateId: 0, code: 0 };
+    }
+
+    const state = states.find((s) => s?.id === editingItem?.stateId);
+    const countryId = state?.countryId ?? 0;
+
+    return {
+      id: editingItem.dbId ?? 0,
+      name: editingItem.name ?? "",
+      stateId: Number(editingItem?.stateId ?? 0),
+      countryId,
+      code: Number(editingItem?.code ?? 0),
+    };
+  }, [editingItem, states]);
 
   return (
     <div className="space-y-4">
@@ -189,33 +199,24 @@ const CitiesSettings = ({ cityListData }: Props) => {
       {isModalOpen && (
         <CrudFormModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingItem(null);
+          }}
           onSave={handleSave}
           title={editingItem ? "Edit City" : "Add City"}
-          defaultValues={
-            editingItem
-              ? {
-                  id: editingItem?.dbId,
-                  name: editingItem?.name,
-                  stateId: Number(editingItem?.stateId),
-                  countryId:
-                    states.find((s) => s.id === editingItem?.stateId)
-                      ?.countryId || 0,
-                  code: Number(editingItem?.code) || 0,
-                }
-              : { id: 0, name: "", countryId: 0, stateId: 0, code: 0 }
-          }
+          defaultValues={defaultValues}
           schema={citySchema}
           isSaving={isSaving}
         >
           <FormSelect
             name="countryId"
             label="Country"
-            options={countries.map((c) => ({
-              label: c.name,
-              value: String(c.id),
+            options={countries?.map((c) => ({
+              label: c?.name,
+              value: String(c?.id),
             }))}
-            disabled={countries.length === 0}
+            disabled={countries?.length === 0}
             className="!w-full mb-2"
           />
           <FormSelect
@@ -225,7 +226,7 @@ const CitiesSettings = ({ cityListData }: Props) => {
               label: s.name,
               value: String(s.id),
             }))}
-            disabled={states.length === 0}
+            disabled={states?.length === 0}
             className="!w-full mb-2"
           />
           <FormField
