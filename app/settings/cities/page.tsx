@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import React from "react";
 import CitiesSettings from "@/components/settings/cities/CitiesSettings";
@@ -8,6 +8,7 @@ import { stateAPI } from "@/components/api/stateApi";
 const cityPage = async () => {
   const [cityResponse, stateResponse, countryResponse] =
     await Promise.allSettled([cityAPI(), stateAPI(), countryAPI()]);
+
   const cities =
     cityResponse?.status === "fulfilled"
       ? cityResponse.value.data?.result || []
