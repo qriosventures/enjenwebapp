@@ -35,6 +35,8 @@ import {
   IdCard,
   Trash2,
   Car,
+  Warehouse,
+  MapPinHouse,
 } from "lucide-react";
 
 export interface SettingsItem {
@@ -142,9 +144,20 @@ export const settingsItems: SettingsItem[] = [
         icon: <Car className="w-4 h-4 mr-3 text-rose-500" />,
       },
       {
-        href: "/settings/warehouses",
-        label: "Warehouses",
-        icon: <Building2 className="w-4 h-4 mr-3 text-blue-500" />,
+        label: "Warehouse Settings",
+        icon: <Warehouse className="w-4 h-4 mr-3 text-orange-500" />,
+        children: [
+          {
+            href: "/settings/warehouses",
+            label: "Warehouses",
+            icon: <Building2 className="w-4 h-4 mr-3 text-blue-500" />,
+          },
+                    {
+            href: "/settings/warehouse-zones",
+            label: "Warehouse Zones",
+            icon: <MapPinHouse className="w-4 h-4 mr-3 text-red-500" />,
+          }
+        ]
       },
     ],
   },

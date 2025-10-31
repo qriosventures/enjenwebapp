@@ -41,7 +41,7 @@ export const designationAPI = async (payload?: DesignationDto, method?: string) 
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath("/designations");
+    if (!isGet) revalidatePath("/settings/designations");
 
     return { status: 200, data };
   } catch (error: any) {

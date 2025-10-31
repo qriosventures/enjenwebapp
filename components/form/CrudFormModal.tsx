@@ -22,6 +22,8 @@ export interface CrudFormModalProps<TSchema extends ZodType<any, any>> {
   defaultValues: Partial<z.infer<TSchema>>;
   children: React.ReactNode;
   isSaving?: boolean;
+  className?: string
+  disableSave?: boolean
 }
 
 export function CrudFormModal<TSchema extends ZodType<any, any>>({
@@ -33,6 +35,8 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
   defaultValues,
   children,
   isSaving,
+  className,
+  disableSave
 }: CrudFormModalProps<TSchema>) {
   const methods = useForm<Partial<z.infer<TSchema>>>({
     resolver: schema ? zodResolver(schema) : undefined,
@@ -47,7 +51,7 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
+      <DialogContent className={`${className || ''}`}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -61,7 +65,7 @@ export function CrudFormModal<TSchema extends ZodType<any, any>>({
               </Button>
               <Button
                 type="submit"
-                disabled={isSaving}
+                disabled={disableSave || isSaving}
                 className="flex items-center gap-2 cursor-pointer rounded-[5px]"
                 onClick={(e) => e.stopPropagation()}
               >

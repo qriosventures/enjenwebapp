@@ -275,7 +275,7 @@ const columnDefs = useMemo<ColDef[]>(() => {
       <div
         className={`${cn(
           "ag-theme-alpine",
-          "rounded-md border overflow-hidden"
+          "rounded-md border overflow-auto"
         )} pb-2`}
         // style={{height}}
       >

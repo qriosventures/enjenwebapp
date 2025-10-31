@@ -406,13 +406,6 @@ const Header: React.FC = () => {
                           activeSecond?.childIndex === cIdx) ||
                         (persistentSection?.topIndex === section.idx &&
                           persistentSection?.childIndex === cIdx);
-                      console.log(
-                        activeSecond,
-                        "child>>>>>>>>>>",
-                        section,
-                        cIdx,
-                        persistentSection
-                      );
                       const hasGrandChildren = !!child.children?.length;
 
                       if (hasGrandChildren) {
