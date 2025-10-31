@@ -11,6 +11,7 @@ import { z } from "zod";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { cityAPI } from "@/components/api/cityApi";
+import { validateRequiredData } from "@/lib/utils/crudValidationUtils";
 
 
 type CountryType = { id: number; name: string };
@@ -60,6 +61,10 @@ const CitiesSettings = ({ cityListData }: Props) => {
   };
 
   const handleAdd = () => {
+    const isValid = validateRequiredData(
+      { countries, states },
+       "city");
+    if (!isValid) return
     setEditingItem(null);
     setIsModalOpen(true);
   };

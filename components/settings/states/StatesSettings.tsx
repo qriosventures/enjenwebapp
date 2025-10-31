@@ -10,6 +10,7 @@ import { z } from "zod";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { stateAPI } from "@/components/api/stateApi";
+import { validateRequiredData } from "@/lib/utils/crudValidationUtils";
 
 type CountryType = { id: number; name: string };
 
@@ -37,10 +38,9 @@ const StatesSettings = ({
   const [countries, setCountries] = useState<CountryType[]>(countryListData);
 
   useEffect(() => {
-     setStates(stateListData);
-     setCountries(countryListData);
-  }, [stateListData,countryListData]);
-
+    setStates(stateListData);
+    setCountries(countryListData);
+  }, [stateListData, countryListData]);
 
   const columns: DataTableColumn<StateType>[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -53,6 +53,8 @@ const StatesSettings = ({
   };
 
   const handleAdd = () => {
+    const isValid = validateRequiredData({ countries }, "state");
+    if (!isValid) return;
     setEditingItem(null);
     setIsModalOpen(true);
   };
