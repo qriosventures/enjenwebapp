@@ -5,7 +5,6 @@ import { brandsAPI } from "@/components/api/brands";
 const BrandsPage = async () => {
   const brandsResponse = await brandsAPI(); 
   const brands = brandsResponse?.data?.result || []; 
-  console.log("Brands data received:", brandsResponse?.data?.result)
   return (
     <>
       <BrandSettings brandsListData={brands} />

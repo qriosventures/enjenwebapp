@@ -12,6 +12,7 @@ import { showToastMessage } from "@/components/common/ToastMessage"
 import CustomButton from "@/components/ui/custom/CustomButton"
 import { format } from "date-fns"
 import CustomIsActiveBadge from "@/components/ui/custom/CustomIsActiveBadge"
+import { validateRequiredData } from "@/lib/utils/crudValidationUtils"
 
 type EmployeeType = {
   id: number
@@ -105,6 +106,16 @@ const EmployeeSettings = ({ employeeListData }: Props) => {
   }
 
   const handleAdd = () => {
+     const isValid = validateRequiredData(
+        {
+          departments,
+          designations
+        },
+        "employee"
+      )
+    
+    if(!isValid) return
+    
     setEditingItem(null)
     setIsModalOpen(true)
   }

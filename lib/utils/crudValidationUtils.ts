@@ -14,7 +14,7 @@ export function validateRequiredData(
     .filter(([_, arr]) => !arr || arr.length === 0)
     .map(([key]) => capitalizeFirstLetter(key))
 
-  if (missingData.length > 0) {
+  if (missingData?.length > 0) {
     const message =
       missingData.length === 1
         ? `${missingData[0]} data is missing.`
