@@ -41,7 +41,7 @@ export const scrapReasonAPI = async (payload?: ScrapReasonDto, method?: string) 
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/scrap-reasons');
+    if (!isGet) revalidatePath('/settings/scrap-reasons');
 
     return { status: 200, data };
   } catch (error: any) {

@@ -41,7 +41,7 @@ export const warehouseAPI = async (payload?: WarehouseDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/warehouses');
+    if (!isGet) revalidatePath('/settings/warehouses');
 
     return { status: 200, data };
   } catch (error: any) {

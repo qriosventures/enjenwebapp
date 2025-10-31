@@ -7,7 +7,7 @@ import { Plus } from "lucide-react";
 import { CrudFormModal } from "@/components/form/CrudFormModal";
 import { FormField } from "@/components/form";
 import { z } from "zod";
-import { departmentAPI } from "@/components/api/departmentApi";
+import { designationAPI } from "@/components/api/designationApi";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Controller } from "react-hook-form";
 import CustomIsActiveBadge from "@/components/ui/custom/CustomIsActiveBadge";
 
-type DepartmentType = {
+type DesignationType = {
   id: number;
   name: string;
   isActive?: boolean;
@@ -23,22 +23,22 @@ type DepartmentType = {
 };
 
 type Props = {
-  departmentsListData?: DepartmentType[];
+  designationsListData?: DesignationType[];
 };
 
-const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
+const DesignationSettings = ({ designationsListData = [] }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<DepartmentType | null>(null);
+  const [editingItem, setEditingItem] = useState<DesignationType | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const departments = React.useMemo(
-    () => departmentsListData || [],
-    [departmentsListData]
+  const designations = React.useMemo(
+    () => designationsListData || [],
+    [designationsListData]
   );
 
-  const columns: DataTableColumn<DepartmentType>[] = [
+  const columns: DataTableColumn<DesignationType>[] = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Department Name", flex: 1 },
+    { field: "name", headerName: "Designation Name", flex: 1 },
     {
       field: "isActive",
       headerName: "Active",
@@ -49,7 +49,7 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
     },
   ];
 
-  const handleEdit = (row: DepartmentType) => {
+  const handleEdit = (row: DesignationType) => {
     setEditingItem(row);
     setIsModalOpen(true);
   };
@@ -59,45 +59,45 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (row: DepartmentType) => {
+  const handleDelete = async (row: DesignationType) => {
     const payload = { id: row?.dbId || row?.id };
-    await showToastMessage.promise(departmentAPI(payload, "DELETE"), {
-      loading: "Deleting department...",
-      success: (res: any) => res?.data?.message || "Department deleted successfully",
-      error: (err: any) => err?.data?.message || "Failed to delete department",
+    await showToastMessage.promise(designationAPI(payload, "DELETE"), {
+      loading: "Deleting designation...",
+      success: (res: any) =>
+        res?.data?.message || "Designation deleted successfully",
+      error: (err: any) => err?.data?.message || "Failed to delete designation",
     });
   };
 
-  const departmentSchema = z.object({
+  const designationSchema = z.object({
     id: z.number().optional(),
     name: z
       .string()
-      .min(1, "Department name is required")
-      .min(3, "Department name must be at least 3 characters"),
+      .min(1, "Designation name is required")
+      .min(3, "Designation name must be at least 3 characters"),
     isActive: z.boolean().default(true),
   });
 
   const handleSave = async (data: any) => {
     try {
       setIsSaving(true);
-
-      const payload = departmentSchema.parse(data);
+      const payload = designationSchema.parse(data);
 
       const request = editingItem
-        ? departmentAPI(
+        ? designationAPI(
             { ...payload, id: editingItem?.dbId || editingItem?.id },
             "PUT"
           )
-        : departmentAPI(payload, "POST");
+        : designationAPI(payload, "POST");
 
       await showToastMessage.promise(request, {
         loading: editingItem
-          ? "Updating department..."
-          : "Adding department...",
+          ? "Updating designation..."
+          : "Adding designation...",
         success: (res: any) =>
-          res?.data?.message || "Department saved successfully!",
+          res?.data?.message || "Designation saved successfully!",
         error: (err: any) =>
-          err?.data?.message || "Failed to save department",
+          err?.data?.message || "Failed to save designation",
       });
 
       setIsModalOpen(false);
@@ -110,7 +110,7 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
     }
   };
 
-  const rowActions = (row: DepartmentType) => (
+  const rowActions = (row: DesignationType) => (
     <RowActions
       row={row}
       actions={["edit", "delete"]}
@@ -122,27 +122,27 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Departments</h2>
+        <h2 className="text-xl font-semibold">Designations</h2>
         <CustomButton
           onClick={handleAdd}
           icon={<Plus strokeWidth={2.2} className="mr-2" />}
           className="cursor-pointer"
         >
-          Add Department
+          Add Designation
         </CustomButton>
       </div>
 
-      {departments?.length === 0 ? (
+      {designations?.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          No departments found. Click "Add Department" to create one.
+          No designations found. Click "Add Designation" to create one.
         </div>
       ) : (
         <DataTable
-          data={departments}
+          data={designations}
           columns={columns}
           rowActions={rowActions}
           rowActionsColumnLabel="Actions"
-          searchPlaceholder="Search departments..."
+          searchPlaceholder="Search designations..."
           searchable={true}
           pagination={false}
           showCheckboxSelection={false}
@@ -165,17 +165,17 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSave={handleSave}
-          title={editingItem ? "Edit Department" : "Add Department"}
+          title={editingItem ? "Edit Designation" : "Add Designation"}
           defaultValues={editingItem || { name: "", isActive: true }}
-          schema={departmentSchema}
+          schema={designationSchema}
           isSaving={isSaving}
         >
           <FormField
             name="name"
-            label="Department Name"
-            placeholder="Enter department name"
+            label="Designation Name"
+            placeholder="Enter designation name"
           />
-        <Controller
+          <Controller
             name="isActive"
             render={({ field }) => (
               <div className="flex items-center space-x-2 pt-3">
@@ -195,4 +195,4 @@ const DepartmentSettings = ({ departmentsListData = [] }: Props) => {
   );
 };
 
-export default DepartmentSettings;
+export default DesignationSettings;

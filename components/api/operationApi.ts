@@ -41,7 +41,7 @@ export const operationAPI = async (payload?: OperationDto, method?: string) => {
 
     const data = await response.json();
 
-    if (!isGet) revalidatePath('/operation');
+    if (!isGet) revalidatePath('/settings/operations');
 
     return { status: 200, data };
   } catch (error: any) {

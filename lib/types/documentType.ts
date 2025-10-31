@@ -1,4 +1,4 @@
 export interface DocumentTypeDto {
   id?: number;
-  name: string;
+  name?: string;
 }
