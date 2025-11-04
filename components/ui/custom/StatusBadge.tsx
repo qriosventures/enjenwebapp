@@ -3,7 +3,7 @@ import React from "react"
 import { Badge } from "@/components/ui/badge"
 
 export interface StatusBadgeProps {
-  status: "Pending" | "Approved" | "Hold" | "Approving" | "Rejected"
+  status: "Pending" | "Approved" | "Hold" | "Approving" | "Rejected" | "Blacklisted" | "Draft" 
   className?:any 
 }
 
@@ -13,6 +13,8 @@ export const statusConfig = {
           Approving: "text-[#308362] border-[#308362]",
           Hold: "text-[#E42236] border-[#FF6868]",
           Rejected: "text-white border-[#FF6868]",
+          Blacklisted: "bg-[#FF6868] text-white !font-[600] hover:bg-red-600 border-[#FF6868]",
+          Draft: "bg-[#D2F0E4] text-[#308362] hover:bg-green-200 border-green-200",
         }
 
 export const statusFillConfig = {
@@ -21,6 +23,8 @@ export const statusFillConfig = {
           Approving: "text-[#308362] border-[#308362]",
           Hold: "text-[#E42236] border-[#FF6868]",
           Rejected: "bg-[#FF6868] text-white !font-[600] hover:bg-red-600 border-[#FF6868]",
+          Blacklisted: "bg-[#FF6868] text-white !font-[600] hover:bg-red-600 border-[#FF6868]",
+          Draft: "bg-[#D2F0E4] text-[#308362] hover:bg-green-200 border-green-200",
 }
         
 export const StatusBadge = ({ status,className }:StatusBadgeProps) => {

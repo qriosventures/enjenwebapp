@@ -68,9 +68,7 @@ const SupplierRegistrationOnBoardingPage = () => {
     annualRevenue: annualRevenue ? Number(annualRevenue) : null,
     employeeCount: numberOfEmployees ? parseEmployeeCount(numberOfEmployees) : null,
     status: 1,
-    registrationDate: yearEstablished
-      ? new Date(yearEstablished).toISOString() 
-      : new Date().toISOString(),
+    registrationDate: new Date().toISOString(),
     lastEvaluationDate: null,
     averageRating: 1,
   };

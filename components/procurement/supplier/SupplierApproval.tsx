@@ -2,9 +2,6 @@
 
 import React, { useState } from "react"
 import { DataTable, DataTableColumn } from "@/components/data-table/data-table"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Eye, Check, X, UserCircle } from "lucide-react"
 import { SupplierDto } from "@/lib/types/supplier"
 import { supplierAPI } from "@/components/api/supplierApi"
 import { showToastMessage } from "@/components/common/ToastMessage"
@@ -23,20 +20,20 @@ export const DB_STATUS_TO_STRING: Record<StatusEnum, StatusBadgeProps["status"]>
   [StatusEnum.Rejected]: "Rejected",
   [StatusEnum.Approving]: "Approving",
   [StatusEnum.Hold]: "Hold",
+  [StatusEnum.Blacklisted]: "Blacklisted",
+  [StatusEnum.Draft]: "Draft",
+
 }
 
 
 const SupplierApproval = ({ supplierApprovalData }: Props) => {
   const [isUpdating, setIsUpdating] = useState(false)
-  
   const suppliers = React.useMemo(
     () => supplierApprovalData && supplierApprovalData.length > 0 
       ? supplierApprovalData 
       : [],
     [supplierApprovalData]
   )
-
-  console.log(suppliers,"supplierssuppliers>>>>>>>>>>>")
 
   const formatDate = (date: Date | null) => {
     if (!date) return "-"
@@ -53,7 +50,7 @@ const SupplierApproval = ({ supplierApprovalData }: Props) => {
       const payload = { ...supplier, status: 1 }
       
       await showToastMessage.promise(
-        supplierAPI(payload, "PUT"),
+        supplierAPI({...payload,id: supplier?.dbId} , "PUT"),
         {
           loading: "Approving supplier...",
           success: (res: any) => res?.data?.message || "Supplier approved successfully",
@@ -73,7 +70,7 @@ const SupplierApproval = ({ supplierApprovalData }: Props) => {
       const payload = { ...supplier, status: 2 }
       
       await showToastMessage.promise(
-        supplierAPI(payload, "PUT"),
+        supplierAPI({...payload,id: supplier?.dbId}, "PUT"),
         {
           loading: "Rejecting supplier...",
           success: (res: any) => res?.data?.message || "Supplier rejected successfully",
@@ -87,7 +84,7 @@ const SupplierApproval = ({ supplierApprovalData }: Props) => {
     }
   }
 
-  const handleView = (supplier: SupplierDto) => {
+  const handleFlag = (supplier: SupplierDto) => {
     // Navigate to detail page or open modal
     console.log("View supplier:", supplier)
   }
@@ -139,7 +136,7 @@ const SupplierApproval = ({ supplierApprovalData }: Props) => {
     row={row}
     actions={["flag","approve","reject"]}
     onApprove={handleApprove}
-    onFlag={handleView}
+    onFlag={handleFlag}
     onReject={handleReject}
     disabled={isUpdating}
     />

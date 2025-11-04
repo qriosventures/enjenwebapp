@@ -33,7 +33,6 @@ export const purchaseRequisitionAPI = async (payload?: PurchaseRequisitionDto, m
       ...(isGet ? {} : { body: JSON.stringify(payload ?? {}) }),
       cache: 'no-store',
     });
-
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error?.message || 'Purchase Requisition API failed');

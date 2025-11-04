@@ -12,12 +12,13 @@ interface TabConfig extends TabDefinition {
 
 interface DynamicTabPageProps {
   sectionPath: string;
-  title: string;
+  title?: string;
   tabsConfig: TabConfig[];
   headerButton?: ReactNode;
+  from?:string
 }
 
-const DynamicTabPage = ({ sectionPath, title, tabsConfig,headerButton }: DynamicTabPageProps) => {
+const DynamicTabPage = ({ sectionPath, title, tabsConfig,headerButton,from }: DynamicTabPageProps) => {
   const { setActiveTab, getActiveTab } = useTabContext();
 
   useEffect(() => {
@@ -33,14 +34,17 @@ const DynamicTabPage = ({ sectionPath, title, tabsConfig,headerButton }: Dynamic
 
   return (
     <div className="mx-auto space-y-6">
-      <div className={`flex items-center justify-between`}>
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">{tabsConfig.find(tab => tab.key === activeTab)?.title || title}</h1>
-          <Breadcrumbs />
+     {!from ? (
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              {tabsConfig.find((tab) => tab.key === activeTab)?.title || title}
+            </h1>
+            <Breadcrumbs />
+          </div>
+          {headerButton && <>{headerButton}</>}
         </div>
-        {headerButton && <>{headerButton}</>}
-      </div>
-
+      ) : null}
       {activeTabState?.loading || isPending ? (
         <div className="space-y-4">
           <Skeleton className="h-10 w-full" />

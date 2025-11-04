@@ -13,5 +13,5 @@ export interface SupplierDto {
   registrationDate: Date | any;
   lastEvaluationDate: Date | null;
   averageRating: number;
-  
+  dbId?: number
 }
