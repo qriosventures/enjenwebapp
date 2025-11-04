@@ -1,54 +1,26 @@
-"use client";
+"use server";
 
-import PurchaseRequisitionTable from "@/components/procurement/purchase-requisition/PurchaseRequisitionTable";
 import { purchaseRequisitionAPI } from "@/components/api/purchaseRequisitionApi";
-import DynamicTabPage from "@/components/common/DynamicTabPage";
-import SupplierRegistrationOnBoardingPage from "@/components/procurement/supplier/SupplierRegistrationOnBoardingPage";
 import { supplierAPI } from "@/components/api/supplierApi";
-import SupplierApproval from "@/components/procurement/supplier/SupplierApproval";
+import SupplierTabs from "@/components/procurement/supplier/SupplierTabs";
 
 
-export default function SupplierPage() {
+export default async function SupplierPage () {
+
+    const [purchaseReqRes, supplierRes] = await Promise.allSettled([
+      purchaseRequisitionAPI(),
+      supplierAPI(),
+    ])
+    console.log(purchaseReqRes)
+
+  const purchaseReqData = purchaseReqRes?.status === 'fulfilled' ? purchaseReqRes?.value?.data?.result || [] : [];
+  const supplierApprovalData = supplierRes?.status === 'fulfilled' ? supplierRes?.value?.data?.result || [] : [];
+  const dataToSend = {
+    purchaseReqData,
+    supplierApprovalData
+  }
+console.log("dataToSend>>>>>>>>>>>>>>>",dataToSend)
   return (
-    <DynamicTabPage
-      sectionPath="/procurement/supplier-registration-onboarding"
-      title="Supplier Registration Details"
-      tabsConfig={[
-        {
-          key: "Overview",
-          fetchData: purchaseRequisitionAPI,
-          content: (data) => <PurchaseRequisitionTable data={data} />,
-        },
-        {
-          key: "Registration",
-          title: "Supplier Registration Form",
-          content: () => (
-            <>
-            <SupplierRegistrationOnBoardingPage/>
-            </>
-          ),
-        },
-        {
-          key: "Approvals",
-          title: "Pending Approval List",
-          fetchData: supplierAPI,
-          content: (data) => (
-            <SupplierApproval supplierApprovalData={data}/>
-          ),
-        },
-        {
-          key: "Manage Suppliers",
-          title: "Suppliers",
-          content: () => (
-            <div className="p-6 bg-white rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Manage Suppliers</h2>
-              <p className="text-gray-600">
-                Supplier management content goes here
-              </p>
-            </div>
-          ),
-        },
-      ]}
-    />
+    <SupplierTabs dataToChild={dataToSend}/>
   );
 }

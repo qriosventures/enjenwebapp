@@ -27,7 +27,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTabContext } from "@/components/conetxt/TabContext";
 import SettingsDrawer from "../settings/common/SettingsDrawer";
 import { settingsItems } from "../settings/common/setting-items";
-import { Button } from "../ui/button";
 
 interface NavItem {
   title: string;
@@ -39,7 +38,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: "Dashboard", path: "/", icon: <Home size={20} /> },
+  { title: "Dashboard", path: "/", icon: <Home size={20} />,tabKeys: ["Dashboard", "Reports", "Settings"],useTabs: true},
   {
     title: "Procurement",
     path: "/Procurement",
@@ -148,42 +147,66 @@ const Header: React.FC = () => {
 
   const isActive = (path?: string) => (path ? pathname === path : false);
 
-  const getPersistentSection = () => {
-    const currentPath = pathname || "";
+const getPersistentSection = () => {
+  const currentPath = pathname || "";
+  let matchedSection: any = null;
+  let deepestMatchLength = 0;
 
-    for (let topIndex = 0; topIndex < navItems.length; topIndex++) {
-      const top = navItems[topIndex];
-      if (!top.children) continue;
+  for (let topIndex = 0; topIndex < navItems.length; topIndex++) {
+    const top = navItems[topIndex];
 
+    if (top.path && currentPath.startsWith(top.path)) {
+      if (top.path.length > deepestMatchLength) {
+        matchedSection = {
+          topIndex,
+          childIndex: null,
+          secondItem: top,
+          topItem: top,
+          hasThirdLevel: !!top.useTabs,
+        };
+        deepestMatchLength = top.path.length;
+      }
+    }
+
+    if (top.children?.length) {
       for (let childIndex = 0; childIndex < top.children.length; childIndex++) {
         const child = top.children[childIndex];
-        if (!child) continue;
-
-        if (
-          child.children?.some((sub) => currentPath.startsWith(sub.path || ""))
-        ) {
-          return {
-            topIndex,
-            childIndex,
-            secondItem: child,
-            topItem: top,
-            hasThirdLevel: true,
-          };
+        if (child.path && currentPath.startsWith(child.path)) {
+          if (child.path.length > deepestMatchLength) {
+            matchedSection = {
+              topIndex,
+              childIndex,
+              secondItem: child,
+              topItem: top,
+              hasThirdLevel: !!child.useTabs,
+            };
+            deepestMatchLength = child.path.length;
+          }
         }
 
-        if (child.path && currentPath.startsWith(child.path)) {
-          return {
-            topIndex,
-            childIndex,
-            secondItem: child,
-            topItem: top,
-            hasThirdLevel: child.useTabs ? true : false,
-          };
+        if (child.children?.length) {
+          for (const sub of child.children) {
+            if (sub.path && currentPath.startsWith(sub.path)) {
+              if (sub.path.length > deepestMatchLength) {
+                matchedSection = {
+                  topIndex,
+                  childIndex,
+                  secondItem: child,
+                  topItem: top,
+                  hasThirdLevel: !!child.useTabs,
+                };
+                deepestMatchLength = sub.path.length;
+              }
+            }
+          }
         }
       }
     }
-    return null;
-  };
+  }
+
+  return matchedSection;
+};
+
 
   const persistentSection = getPersistentSection();
 

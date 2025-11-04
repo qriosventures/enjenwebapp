@@ -28,10 +28,9 @@ interface PurchaseRequisitionTableProps {
 export default function PurchaseRequisitionTable({ 
   data 
 }: PurchaseRequisitionTableProps) {
-
   const [selectedRow, setSelectedRow] = useState<PurchaseRequisition | null>(null)
   const [isHistoryOpen, setIsHistoryOpen] = useState(false)
-  const tableData: PurchaseRequisition[] = data.length > 0 ? data : [
+  const tableData: PurchaseRequisition[] = data?.length > 0 ? data : [
     {
       requisitionId: "REQ-097-672",
       date: "21/03/2023",
@@ -200,6 +199,7 @@ export default function PurchaseRequisitionTable({
           title={`History - ${selectedRow?.requisitionId}`}
           children={<HistoryDrawer history={sampleHistory}/>}
           closeLabel='Close History'
+          widthClass="max-w-[700px] w-full sm:w-full"
         />
       )}
     </>
