@@ -10,6 +10,7 @@ import { z } from "zod";
 import { showToastMessage } from "@/components/common/ToastMessage";
 import CustomButton from "@/components/ui/custom/CustomButton";
 import { stateAPI } from "@/components/api/stateApi";
+import { validateRequiredData } from "@/lib/utils/crudValidationUtils";
 
 type CountryType = { id: number; name: string };
 
@@ -22,25 +23,22 @@ type StateType = {
 };
 
 type Props = {
-  stateListData?: StateType[];
-  countryListData?: CountryType[];
+  stateListData: {
+    states: StateType[];
+    countries: CountryType[];
+  };
 };
 
-const StatesSettings = ({
-  stateListData = [],
-  countryListData = [],
-}: Props) => {
+const StatesSettings = ({ stateListData }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<StateType | any>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [states, setStates] = useState<StateType[]>(stateListData);
-  const [countries, setCountries] = useState<CountryType[]>(countryListData);
+  const [states, setStates] = useState<StateType[]>();
+  const { countries } = stateListData;
 
   useEffect(() => {
-     setStates(stateListData);
-     setCountries(countryListData);
-  }, [stateListData,countryListData]);
-
+    setStates(stateListData.states);
+  }, [stateListData]);
 
   const columns: DataTableColumn<StateType>[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -53,6 +51,8 @@ const StatesSettings = ({
   };
 
   const handleAdd = () => {
+    const isValid = validateRequiredData({ countries }, "state");
+    if (!isValid) return;
     setEditingItem(null);
     setIsModalOpen(true);
   };
@@ -135,7 +135,7 @@ const StatesSettings = ({
         </CustomButton>
       </div>
 
-      {states.length === 0 ? (
+      {!states || states.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
           No states found. Click "Add State" to create one.
         </div>
